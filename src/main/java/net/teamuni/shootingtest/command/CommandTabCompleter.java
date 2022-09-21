@@ -13,13 +13,6 @@ public class CommandTabCompleter implements TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
-        if (cmd.getName().equalsIgnoreCase("사격장")) {
-            List<String> tabCompleteList = new ArrayList<>();
-            if (args.length == 1) {
-                tabCompleteList.add("위치설정");
-            }
-            return tabCompleteList;
-        }
         if (cmd.getName().equalsIgnoreCase("st")) {
             List<String> tabCompleteList = new ArrayList<>();
             if (args.length == 1) {

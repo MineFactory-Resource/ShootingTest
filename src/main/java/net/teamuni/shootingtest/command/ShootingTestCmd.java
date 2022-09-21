@@ -17,18 +17,6 @@ public class ShootingTestCmd implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (command.getName().equalsIgnoreCase("사격장") && args[0].equalsIgnoreCase("위치설정")
-                    && player.hasPermission("st.manage")) {
-                main.getConfig().set("range.world", player.getLocation().getWorld().getName());
-                main.getConfig().set("range.x", player.getLocation().getX());
-                main.getConfig().set("range.y", player.getLocation().getY());
-                main.getConfig().set("range.z", player.getLocation().getZ());
-                main.getConfig().set("range.yaw", player.getLocation().getYaw());
-                main.getConfig().set("range.pitch", player.getLocation().getPitch());
-                main.saveConfig();
-                player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Shooting Range point has been set!");
-                return false;
-            }
             if (command.getName().equalsIgnoreCase("st") && args[0].equalsIgnoreCase("reload")
                     && player.hasPermission("st.manage")) {
                 main.reloadConfig();

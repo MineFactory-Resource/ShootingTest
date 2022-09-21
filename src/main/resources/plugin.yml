@@ -4,8 +4,6 @@ main: net.teamuni.shootingtest.ShootingTest
 api-version: 1.18
 depend: [Multiverse-Core]
 commands:
-  사격장:
-    permission: st.manage
   st:
     permission: st.manage
 permissions:
