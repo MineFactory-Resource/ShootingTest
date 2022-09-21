@@ -6,8 +6,7 @@ public final class ShootingTest extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        saveDefaultConfig();
     }
 
     @Override
