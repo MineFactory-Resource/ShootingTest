@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.Command;
+package net.teamuni.shootingtest.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,6 +17,13 @@ public class CommandTabCompleter implements TabCompleter {
             List<String> tabCompleteList = new ArrayList<>();
             if (args.length == 1) {
                 tabCompleteList.add("위치설정");
+            }
+            return tabCompleteList;
+        }
+        if (cmd.getName().equalsIgnoreCase("st")) {
+            List<String> tabCompleteList = new ArrayList<>();
+            if (args.length == 1) {
+                tabCompleteList.add("reload");
             }
             return tabCompleteList;
         }

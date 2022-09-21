@@ -1,6 +1,7 @@
-package net.teamuni.shootingtest.Command;
+package net.teamuni.shootingtest.command;
 
 import net.teamuni.shootingtest.ShootingTest;
+import net.teamuni.shootingtest.config.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +28,12 @@ public class ShootingTestCmd implements CommandExecutor {
                 main.saveConfig();
                 player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Shooting Range point has been set!");
                 return false;
+            }
+            if (command.getName().equalsIgnoreCase("st") && args[0].equalsIgnoreCase("reload")
+                    && player.hasPermission("st.manage")) {
+                main.reloadConfig();
+                MessageManager.reload();
+                player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Shooting Range point has been set!");
             }
         }
         return false;

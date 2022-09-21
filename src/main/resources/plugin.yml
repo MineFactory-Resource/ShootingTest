@@ -6,6 +6,8 @@ depend: [Multiverse-Core]
 commands:
   사격장:
     permission: st.manage
+  st:
+    permission: st.manage
 permissions:
   st.manage:
     default: op
