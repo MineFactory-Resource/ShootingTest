@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.teamuni.shootingtest.command.CommandTabCompleter;
 import net.teamuni.shootingtest.command.ShootingTestCmd;
 import net.teamuni.shootingtest.config.MessageManager;
+import net.teamuni.shootingtest.events.PlayerTeleport;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -21,6 +23,7 @@ public final class ShootingTest extends JavaPlugin {
         messages = new MessageManager();
         messages.createMessagesYml();
         saveDefaultConfig();
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleport(), this);
         getCommand("사격장").setExecutor(new ShootingTestCmd());
         getCommand("사격장").setTabCompleter(new CommandTabCompleter());
         getCommand("st").setExecutor(new ShootingTestCmd());
@@ -29,6 +32,6 @@ public final class ShootingTest extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        saveConfig();
     }
 }
