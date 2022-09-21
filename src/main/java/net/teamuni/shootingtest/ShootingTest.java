@@ -23,6 +23,8 @@ public final class ShootingTest extends JavaPlugin {
         saveDefaultConfig();
         getCommand("사격장").setExecutor(new ShootingTestCmd());
         getCommand("사격장").setTabCompleter(new CommandTabCompleter());
+        getCommand("st").setExecutor(new ShootingTestCmd());
+        getCommand("st").setTabCompleter(new CommandTabCompleter());
     }
 
     @Override
