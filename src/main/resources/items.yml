@@ -1,0 +1,8 @@
+Items:
+  gun_menu:
+    slot: 8
+    item_type: "GOLD_NUGGET"
+
+  test:
+    slot: 0
+    item_type: "IRON_NUGGET"
