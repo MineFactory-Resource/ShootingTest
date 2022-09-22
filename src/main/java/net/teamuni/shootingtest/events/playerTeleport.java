@@ -1,6 +1,6 @@
 package net.teamuni.shootingtest.events;
 
-import net.teamuni.shootingtest.PlayerInv;
+import net.teamuni.shootingtest.ShootingTestInv;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PlayerTeleport implements Listener {
     private final ShootingTest main = ShootingTest.getInstance();
-    private final PlayerInv inv = PlayerInv.getPlayerInv();
+    private final ShootingTestInv inv = new ShootingTestInv();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onTeleport(PlayerTeleportEvent event) {

@@ -3,6 +3,7 @@ package net.teamuni.shootingtest;
 import lombok.Getter;
 import net.teamuni.shootingtest.command.CommandTabCompleter;
 import net.teamuni.shootingtest.command.ShootingTestCmd;
+import net.teamuni.shootingtest.config.ItemManager;
 import net.teamuni.shootingtest.config.MessageManager;
 import net.teamuni.shootingtest.events.PlayerTeleport;
 import org.bukkit.Bukkit;
@@ -12,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class ShootingTest extends JavaPlugin {
 
     private static ShootingTest shootingTest;
-    private static MessageManager messages;
     public static ShootingTest getInstance() {
         return shootingTest;
     }
@@ -20,8 +20,10 @@ public final class ShootingTest extends JavaPlugin {
     @Override
     public void onEnable() {
         shootingTest = this;
-        messages = new MessageManager();
+        MessageManager messages = new MessageManager();
         messages.createMessagesYml();
+        ItemManager items = new ItemManager();
+        items.createItemsYml();
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(), this);
         getCommand("st").setExecutor(new ShootingTestCmd());
