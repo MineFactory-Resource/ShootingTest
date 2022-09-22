@@ -12,7 +12,7 @@ import java.util.UUID;
 public class ShootingTestInv {
     public ShootingTestInv() {
         ItemManager itemManager = new ItemManager();
-        stItem.putAll(itemManager.getItems("Items"));
+        this.stItem.putAll(itemManager.getItems("Items"));
     }
 
     @NotNull
