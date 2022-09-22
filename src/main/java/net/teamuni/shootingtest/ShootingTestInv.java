@@ -9,13 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerInv {
-    public PlayerInv() {
+public class ShootingTestInv {
+    public ShootingTestInv() {
         ItemManager itemManager = new ItemManager();
-        this.stItem.putAll(itemManager.getItems("Items"));
-    }
-    public static PlayerInv getPlayerInv() {
-        return new PlayerInv();
+        stItem.putAll(itemManager.getItems("Items"));
     }
 
     @NotNull
