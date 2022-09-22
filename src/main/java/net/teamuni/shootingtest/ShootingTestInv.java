@@ -10,14 +10,15 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ShootingTestInv {
-    public ShootingTestInv() {
-        ItemManager itemManager = new ItemManager();
-        this.stItem.putAll(itemManager.getItems("Items"));
-    }
 
     @NotNull
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
+
+    public ShootingTestInv() {
+        ItemManager itemManager = new ItemManager();
+        this.stItem.putAll(itemManager.getItems("Items"));
+    }
 
     public void setPlayerInv(Player player) {
         ItemStack[] inv = player.getInventory().getContents();
