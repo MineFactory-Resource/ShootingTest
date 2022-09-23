@@ -74,4 +74,16 @@ public class ItemManager {
         }
         return items;
     }
+
+    public ItemStack createGuiItem(final Material material, final String name, final String... lore) {
+        final ItemStack item = new ItemStack(material, 1);
+        final ItemMeta meta = item.getItemMeta();
+
+        meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
+        meta.lore(Collections.singletonList(Component.text(ChatColor.translateAlternateColorCodes('&', Arrays.toString(lore)))));
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
 }

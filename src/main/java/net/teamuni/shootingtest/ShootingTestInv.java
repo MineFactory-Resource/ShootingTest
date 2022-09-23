@@ -3,7 +3,6 @@ package net.teamuni.shootingtest;
 import net.kyori.adventure.text.Component;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,9 +27,9 @@ public class ShootingTestInv implements Listener {
     private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
     private final Inventory inventory;
     private final ShootingTest main = ShootingTest.getInstance();
+    private final ItemManager itemManager = new ItemManager();
 
     public ShootingTestInv() {
-        ItemManager itemManager = new ItemManager();
         this.stItem.putAll(itemManager.getItems("Items"));
         for (ItemStack itemStack : stItem.values()) {
             this.stItemMetaSet.add(itemStack.getItemMeta());
@@ -56,20 +55,8 @@ public class ShootingTestInv implements Listener {
     }
 
     public void initializeItems() {
-        inventory.addItem(createGuiItem(Material.DIAMOND_SWORD, "Example Sword", "Example Lore", "Example Lore2"));
-        inventory.addItem(createGuiItem(Material.IRON_HELMET, "Example Helmet", "Example Lore", "Example Lore2"));
-    }
-
-    protected ItemStack createGuiItem(final Material material, final String name, final String... lore) {
-        final ItemStack item = new ItemStack(material, 1);
-        final ItemMeta meta = item.getItemMeta();
-
-        meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
-        meta.lore(Collections.singletonList(Component.text(ChatColor.translateAlternateColorCodes('&', Arrays.toString(lore)))));
-
-        item.setItemMeta(meta);
-
-        return item;
+        inventory.addItem(itemManager.createGuiItem(Material.DIAMOND_SWORD, "Example Sword", "Example Lore", "Example Lore2"));
+        inventory.addItem(itemManager.createGuiItem(Material.IRON_HELMET, "Example Helmet", "Example Lore", "Example Lore2"));
     }
 
     @EventHandler
