@@ -5,7 +5,6 @@ import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +25,7 @@ public class ShootingTestInv implements Listener {
     @NotNull
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
-    private final Set<ItemMeta> itemStackList = new HashSet<>();
+    private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
     private final Inventory inventory;
     private final ShootingTest main = ShootingTest.getInstance();
 
@@ -34,7 +33,7 @@ public class ShootingTestInv implements Listener {
         ItemManager itemManager = new ItemManager();
         this.stItem.putAll(itemManager.getItems("Items"));
         for (ItemStack itemStack : stItem.values()) {
-            this.itemStackList.add(itemStack.getItemMeta());
+            this.stItemMetaSet.add(itemStack.getItemMeta());
         }
         this.inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
         initializeItems();
@@ -92,7 +91,7 @@ public class ShootingTestInv implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (!worlds.contains(player.getWorld().getName())) return;
-            if (!itemStackList.contains(player.getInventory().getItemInMainHand().getItemMeta())) return;
+            if (!stItemMetaSet.contains(player.getInventory().getItemInMainHand().getItemMeta())) return;
             player.openInventory(inventory);
         }
     }
