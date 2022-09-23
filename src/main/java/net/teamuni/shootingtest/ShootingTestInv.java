@@ -26,12 +26,16 @@ public class ShootingTestInv implements Listener {
     @NotNull
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
+    private final Set<ItemMeta> itemStackList = new HashSet<>();
     private final Inventory inventory;
     private final ShootingTest main = ShootingTest.getInstance();
 
     public ShootingTestInv() {
         ItemManager itemManager = new ItemManager();
         this.stItem.putAll(itemManager.getItems("Items"));
+        for (ItemStack itemStack : stItem.values()) {
+            this.itemStackList.add(itemStack.getItemMeta());
+        }
         this.inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
         initializeItems();
     }
@@ -85,11 +89,10 @@ public class ShootingTestInv implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         List<String> worlds = main.getConfig().getStringList("enable_world");
-        List<ItemStack> itemStackList = new ArrayList<>(stItem.values());
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (!worlds.contains(player.getWorld().getName())) return;
-            if (!itemStackList.contains(player.getInventory().getItemInMainHand())) return;
+            if (!itemStackList.contains(player.getInventory().getItemInMainHand().getItemMeta())) return;
             player.openInventory(inventory);
         }
     }

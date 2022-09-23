@@ -1,18 +1,20 @@
 package net.teamuni.shootingtest.config;
 
+import net.kyori.adventure.text.Component;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ItemManager {
 
@@ -54,8 +56,23 @@ public class ItemManager {
         }
         for (String key : itemKeys) {
             int slot = ItemManager.get().getInt(path + "." + key + ".slot");
-            ItemStack item = new ItemStack(Material.valueOf(ItemManager.get().getString(path + "." + key + ".item_type")));
-            items.put(slot, item);
+            try {
+                ItemStack item = new ItemStack(Material.valueOf(ItemManager.get().getString(path + "." + key + ".item_type")));
+                ItemMeta meta = item.getItemMeta();
+                String itemName = ItemManager.get().getString(path + "." + key + ".name");
+                List<Component> loreList = new ArrayList<>();
+
+                for (String lores : ItemManager.get().getStringList(path + "." + key + ".lore")) {
+                    loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
+                }
+                meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
+                meta.lore(loreList);
+
+                item.setItemMeta(meta);
+                items.put(slot, item);
+            } catch (NullPointerException | IllegalArgumentException e) {
+                e.printStackTrace();
+            }
         }
         return items;
     }
