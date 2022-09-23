@@ -26,6 +26,7 @@ public final class ShootingTest extends JavaPlugin {
         items.createItemsYml();
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(), this);
+        Bukkit.getPluginManager().registerEvents(new ShootingTestInv(), this);
         getCommand("st").setExecutor(new ShootingTestCmd());
         getCommand("st").setTabCompleter(new CommandTabCompleter());
     }
