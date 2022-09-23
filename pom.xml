@@ -76,5 +76,12 @@
             <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.teamuni</groupId>
+            <artifactId>GunsCore</artifactId>
+            <version>0.1.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/GunsCore-0.1.6-all.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
