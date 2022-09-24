@@ -15,16 +15,6 @@ public final class ShootingTest extends JavaPlugin {
     private MessageManager messageManager;
     private ShootingTestInv inventory;
 
-    public ItemManager getItemManager() {
-        return itemManager;
-    }
-    public MessageManager getMessageManager() {
-        return messageManager;
-    }
-    public ShootingTestInv getInventory() {
-        return inventory;
-    }
-
     @Override
     public void onEnable() {
         this.messageManager = new MessageManager(this);
