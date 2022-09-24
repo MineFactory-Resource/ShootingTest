@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShootingTestCmd implements CommandExecutor {
     private final ShootingTest main = ShootingTest.getInstance();
+    private final ItemManager itemManager = new ItemManager();
+    private final MessageManager messageManager = new MessageManager();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -21,8 +23,8 @@ public class ShootingTestCmd implements CommandExecutor {
             if (command.getName().equalsIgnoreCase("st") && args[0].equalsIgnoreCase("reload")
                     && player.hasPermission("st.manage")) {
                 main.reloadConfig();
-                MessageManager.reload();
-                ItemManager.reload();
+                messageManager.reload();
+                itemManager.reload();
                 player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Shooting Range point has been set!");
             }
         }

@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class MessageManager {
     private final ShootingTest main = ShootingTest.getInstance();
-    private static File file;
-    private static FileConfiguration messagesFile;
+    private File file;
+    private FileConfiguration messagesFile;
 
     public void createMessagesYml() {
         file = new File(main.getDataFolder(), "messages.yml");
@@ -21,11 +21,11 @@ public class MessageManager {
         messagesFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static FileConfiguration get() {
+    public FileConfiguration get() {
         return messagesFile;
     }
 
-    public static void save() {
+    public void save() {
         try {
             messagesFile.save(file);
         } catch (IOException e) {
@@ -33,7 +33,7 @@ public class MessageManager {
         }
     }
 
-    public static void reload() {
+    public void reload() {
         messagesFile = YamlConfiguration.loadConfiguration(file);
     }
 }
