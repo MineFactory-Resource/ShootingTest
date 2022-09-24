@@ -16,51 +16,63 @@ import java.util.*;
 
 public class ItemManager {
 
-    private final ShootingTest main = ShootingTest.getInstance();
-    private File file;
-    private FileConfiguration itemsFile;
+    private final ShootingTest main;
+    private File file = null;
+    private FileConfiguration itemsFile = null;
+
+    public ItemManager(ShootingTest plugin) {
+        this.main = plugin;
+        createItemsYml();
+    }
 
     public void createItemsYml() {
-        file = new File(main.getDataFolder(), "items.yml");
-
+        if (this.file == null) {
+            this.file = new File(main.getDataFolder(), "items.yml");
+        }
         if (!file.exists()) {
             main.saveResource("items.yml", false);
         }
-        itemsFile = YamlConfiguration.loadConfiguration(file);
+        this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public FileConfiguration get() {
-        return itemsFile;
+    public FileConfiguration getConfig() {
+        return this.itemsFile;
     }
 
     public void save() {
+        if (this.file == null || this.itemsFile == null) return;
+
         try {
-            itemsFile.save(file);
+            getConfig().save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void reload() {
-        itemsFile = YamlConfiguration.loadConfiguration(file);
+        if (this.file == null) {
+            this.file = new File(main.getDataFolder(), "items.yml");
+        }
+
+        this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
     @NotNull
     public Map<Integer, ItemStack> getItems(String path) {
         Map<Integer, ItemStack> items = new HashMap<>();
-        Set<String> itemKeys = this.get().getConfigurationSection(path).getKeys(false);
+        Set<String> itemKeys = this.getConfig().getConfigurationSection(path).getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : itemKeys) {
-            int slot = this.get().getInt(path + "." + key + ".slot");
+            int slot = this.getConfig().getInt(path + "." + key + ".slot");
             try {
-                ItemStack item = new ItemStack(Material.valueOf(this.get().getString(path + "." + key + ".item_type")));
+                ItemStack item = new ItemStack(Material.valueOf(this.getConfig().getString(path + "." + key + ".item_type")));
                 ItemMeta meta = item.getItemMeta();
-                String itemName = this.get().getString(path + "." + key + ".name");
+                String itemName = this.getConfig().getString(path + "." + key + ".name");
                 List<Component> loreList = new ArrayList<>();
 
-                for (String lores : this.get().getStringList(path + "." + key + ".lore")) {
+                for (String lores : this.getConfig().getStringList(path + "." + key + ".lore")) {
                     loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
                 }
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));

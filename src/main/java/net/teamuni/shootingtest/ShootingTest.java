@@ -16,14 +16,14 @@ public final class ShootingTest extends JavaPlugin {
     public static ShootingTest getInstance() {
         return shootingTest;
     }
+    public ItemManager itemManager;
+    public MessageManager messageManager;
 
     @Override
     public void onEnable() {
         shootingTest = this;
-        MessageManager messages = new MessageManager();
-        messages.createMessagesYml();
-        ItemManager items = new ItemManager();
-        items.createItemsYml();
+        this.messageManager = new MessageManager(this);
+        this.itemManager = new ItemManager(this);
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(), this);
         Bukkit.getPluginManager().registerEvents(new ShootingTestInv(), this);

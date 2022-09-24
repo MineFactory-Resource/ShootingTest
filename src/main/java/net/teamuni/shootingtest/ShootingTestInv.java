@@ -27,9 +27,10 @@ public class ShootingTestInv implements Listener {
     private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
     private final Inventory inventory;
     private final ShootingTest main = ShootingTest.getInstance();
-    private final ItemManager itemManager = new ItemManager();
+    private final ItemManager itemManager;
 
     public ShootingTestInv() {
+        this.itemManager = main.itemManager;
         this.stItem.putAll(itemManager.getItems("Items"));
         for (ItemStack itemStack : stItem.values()) {
             this.stItemMetaSet.add(itemStack.getItemMeta());
