@@ -19,8 +19,8 @@ public class ItemManager {
     private File file = null;
     private FileConfiguration itemsFile = null;
 
-    public ItemManager(ShootingTest plugin) {
-        this.main = plugin;
+    public ItemManager(ShootingTest instance) {
+        this.main = instance;
         createItemsYml();
     }
 

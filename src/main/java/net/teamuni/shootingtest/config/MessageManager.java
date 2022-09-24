@@ -12,8 +12,8 @@ public class MessageManager {
     private File file = null;
     private FileConfiguration messagesFile = null;
 
-    public MessageManager(ShootingTest plugin) {
-        this.main = plugin;
+    public MessageManager(ShootingTest instance) {
+        this.main = instance;
         createMessagesYml();
     }
 
