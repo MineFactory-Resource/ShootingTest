@@ -14,10 +14,8 @@ public class ShootingTestInv {
     @NotNull
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
-
-    public ShootingTestInv() {
-        ShootingTest main = ShootingTest.getInstance();
-        ItemManager itemManager = main.itemManager;
+    public ShootingTestInv(ShootingTest instance) {
+        ItemManager itemManager = instance.getItemManager();
         this.stItem.putAll(itemManager.getItems("Items"));
     }
 
