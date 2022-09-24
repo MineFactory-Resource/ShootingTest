@@ -25,12 +25,13 @@ public class ShootingTestInv implements Listener {
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
     private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
-    private final Inventory inventory;
-    private final ShootingTest main = ShootingTest.getInstance();
     private final ItemManager itemManager;
+    private final Inventory inventory;
+    private final ShootingTest main;
 
-    public ShootingTestInv() {
-        this.itemManager = main.itemManager;
+    public ShootingTestInv(ShootingTest instance) {
+        this.main = instance;
+        this.itemManager = instance.getItemManager();
         this.stItem.putAll(itemManager.getItems("Items"));
         for (ItemStack itemStack : stItem.values()) {
             this.stItemMetaSet.add(itemStack.getItemMeta());

@@ -20,8 +20,8 @@ public class ItemManager {
     private File file = null;
     private FileConfiguration itemsFile = null;
 
-    public ItemManager(ShootingTest plugin) {
-        this.main = plugin;
+    public ItemManager(ShootingTest instance) {
+        this.main = instance;
         createItemsYml();
     }
 
@@ -60,7 +60,7 @@ public class ItemManager {
     @NotNull
     public Map<Integer, ItemStack> getItems(String path) {
         Map<Integer, ItemStack> items = new HashMap<>();
-        Set<String> itemKeys = this.getConfig().getConfigurationSection(path).getKeys(false);
+        Set<String> itemKeys = this.get().getConfigurationSection(path).getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }

@@ -11,23 +11,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
 public final class ShootingTest extends JavaPlugin {
-
-    private static ShootingTest shootingTest;
-    public static ShootingTest getInstance() {
-        return shootingTest;
-    }
-    public ItemManager itemManager;
-    public MessageManager messageManager;
+    private ItemManager itemManager;
+    private MessageManager messageManager;
+    private ShootingTestInv inventory;
 
     @Override
     public void onEnable() {
-        shootingTest = this;
         this.messageManager = new MessageManager(this);
         this.itemManager = new ItemManager(this);
+        this.inventory = new ShootingTestInv(this);
         saveDefaultConfig();
-        Bukkit.getPluginManager().registerEvents(new PlayerTeleport(), this);
-        Bukkit.getPluginManager().registerEvents(new ShootingTestInv(), this);
-        getCommand("st").setExecutor(new ShootingTestCmd());
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleport(this), this);
+        getCommand("st").setExecutor(new ShootingTestCmd(this));
         getCommand("st").setTabCompleter(new CommandTabCompleter());
     }
 
