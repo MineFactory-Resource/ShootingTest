@@ -16,7 +16,8 @@ public class ShootingTestInv {
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
 
     public ShootingTestInv() {
-        ItemManager itemManager = new ItemManager();
+        ShootingTest main = ShootingTest.getInstance();
+        ItemManager itemManager = main.itemManager;
         this.stItem.putAll(itemManager.getItems("Items"));
     }
 

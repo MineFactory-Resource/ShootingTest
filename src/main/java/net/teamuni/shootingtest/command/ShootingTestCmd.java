@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShootingTestCmd implements CommandExecutor {
     private final ShootingTest main = ShootingTest.getInstance();
-    private final ItemManager itemManager = new ItemManager();
-    private final MessageManager messageManager = new MessageManager();
+    private final ItemManager itemManager = main.itemManager;
+    private final MessageManager messageManager = main.messageManager;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
