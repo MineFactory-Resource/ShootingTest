@@ -8,32 +8,44 @@ import java.io.File;
 import java.io.IOException;
 
 public class MessageManager {
-    private final ShootingTest main = ShootingTest.getInstance();
-    private static File file;
-    private static FileConfiguration messagesFile;
+    private final ShootingTest main;
+    private File file = null;
+    private FileConfiguration messagesFile = null;
+
+    public MessageManager(ShootingTest instance) {
+        this.main = instance;
+        createMessagesYml();
+    }
 
     public void createMessagesYml() {
-        file = new File(main.getDataFolder(), "messages.yml");
-
+        if (this.file == null) {
+            this.file = new File(main.getDataFolder(), "messages.yml");
+        }
         if (!file.exists()) {
             main.saveResource("messages.yml", false);
         }
-        messagesFile = YamlConfiguration.loadConfiguration(file);
+        this.messagesFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static FileConfiguration get() {
-        return messagesFile;
+    public FileConfiguration getConfig() {
+        return this.messagesFile;
     }
 
-    public static void save() {
+    public void save() {
+        if (this.file == null || this.messagesFile == null) return;
+
         try {
-            messagesFile.save(file);
+            getConfig().save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void reload() {
-        messagesFile = YamlConfiguration.loadConfiguration(file);
+    public void reload() {
+        if (this.file == null) {
+            this.file = new File(main.getDataFolder(), "messages.yml");
+        }
+
+        this.messagesFile = YamlConfiguration.loadConfiguration(file);
     }
 }
