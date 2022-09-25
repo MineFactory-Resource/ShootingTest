@@ -1,6 +1,7 @@
 package net.teamuni.shootingtest.config;
 
 import net.kyori.adventure.text.Component;
+import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -77,7 +78,6 @@ public class ItemManager {
                 }
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
                 meta.lore(loreList);
-
                 item.setItemMeta(meta);
                 items.put(slot, item);
             } catch (NullPointerException | IllegalArgumentException e) {
@@ -87,15 +87,32 @@ public class ItemManager {
         return items;
     }
 
-    public ItemStack createGuiItem(final Material material, final String name, final String... lore) {
-        final ItemStack item = new ItemStack(material, 1);
-        final ItemMeta meta = item.getItemMeta();
+    public Map<Integer, ItemStack> getGunItem(String path) {
+        Map<Integer, ItemStack> guns = new HashMap<>();
+        Set<String> gunKeys = this.getConfig().getConfigurationSection(path).getKeys(false);
+        if (gunKeys.isEmpty()) {
+            throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
+        }
+        for (String key : gunKeys) {
+            int slot = this.getConfig().getInt(path + "." + key + ".slot");
+            try {
+                ItemStack gun = GunsAPI.getGun(key).getItem();
+                ItemMeta gunMeta = gun.getItemMeta();
+                String gunName = this.getConfig().getString(path + "." + key + ".name");
+                List<Component> loreList = new ArrayList<>();
 
-        meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
-        meta.lore(Collections.singletonList(Component.text(ChatColor.translateAlternateColorCodes('&', Arrays.toString(lore)))));
-
-        item.setItemMeta(meta);
-
-        return item;
+                for (String lores : this.getConfig().getStringList(path + "." + key + ".lore")) {
+                    loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
+                }
+                gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
+                gunMeta.lore(loreList);
+                gun.setItemMeta(gunMeta);
+                gun.setAmount(1);
+                guns.put(slot, gun);
+            } catch (NullPointerException | IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+        return guns;
     }
 }
