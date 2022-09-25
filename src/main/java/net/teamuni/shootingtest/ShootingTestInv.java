@@ -32,7 +32,7 @@ public class ShootingTestInv implements Listener {
     public ShootingTestInv(ShootingTest instance) {
         this.main = instance;
         this.itemManager = instance.getItemManager();
-        this.stItem.putAll(itemManager.getItems("Items"));
+        this.stItem.putAll(itemManager.getItems("InventoryItems"));
         for (ItemStack itemStack : stItem.values()) {
             this.stItemMetaSet.add(itemStack.getItemMeta());
         }
