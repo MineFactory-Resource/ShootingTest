@@ -1,6 +1,7 @@
 package net.teamuni.shootingtest;
 
 import net.kyori.adventure.text.Component;
+import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -65,7 +66,9 @@ public class ShootingTestInv implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!event.getInventory().equals(inventory)) return;
+        if (GunsAPI.getGun(event.getCurrentItem()) == null) return;
         event.setCancelled(true);
+        event.getWhoClicked().getInventory().setItem(0, GunsAPI.getGun(event.getCurrentItem()).getItem());
     }
 
     @EventHandler
