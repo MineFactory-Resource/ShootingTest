@@ -2,3 +2,10 @@ name: ShootingTest
 version: '${project.version}'
 main: net.teamuni.shootingtest.ShootingTest
 api-version: 1.18
+depend: [Multiverse-Core]
+commands:
+  st:
+    permission: st.manage
+permissions:
+  st.manage:
+    default: op
