@@ -63,7 +63,7 @@
         </repository>
         <repository>
             <id>localrepository</id>
-            <url>file://${project.basedir}/src/main/resources/lib</url>
+            <url>file://${project.basedir}/libs/GunsCore-0.1.6-all.jar</url>
         </repository>
     </repositories>
 
@@ -85,7 +85,7 @@
             <artifactId>GunsCore</artifactId>
             <version>0.1.6</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/GunsCore-0.1.6-all.jar</systemPath>
+            <systemPath>${project.basedir}/libs/GunsCore-0.1.6-all.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
