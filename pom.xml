@@ -6,7 +6,7 @@
 
     <groupId>net.teamuni</groupId>
     <artifactId>ShootingTest</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
 
     <name>ShootingTest</name>
@@ -60,6 +60,10 @@
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>localrepository</id>
+            <url>file://${project.basedir}/src/main/resources/lib</url>
         </repository>
     </repositories>
 
