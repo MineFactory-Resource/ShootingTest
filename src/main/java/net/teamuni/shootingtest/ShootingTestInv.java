@@ -72,7 +72,7 @@ public class ShootingTestInv implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryDragEvent event) {
+    public void onInventoryDrag(InventoryDragEvent event) {
         if (!event.getInventory().equals(inventory)) return;
         event.setCancelled(true);
     }
