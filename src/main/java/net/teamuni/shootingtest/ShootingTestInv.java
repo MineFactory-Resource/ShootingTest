@@ -3,7 +3,6 @@ package net.teamuni.shootingtest;
 import net.kyori.adventure.text.Component;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,15 +23,16 @@ public class ShootingTestInv implements Listener {
     @NotNull
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
+    private final Map<Integer, ItemStack> gun = new HashMap<>();
     private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
-    private final ItemManager itemManager;
     private final Inventory inventory;
     private final ShootingTest main;
 
     public ShootingTestInv(ShootingTest instance) {
         this.main = instance;
-        this.itemManager = instance.getItemManager();
-        this.stItem.putAll(itemManager.getItems("Items"));
+        ItemManager itemManager = instance.getItemManager();
+        this.stItem.putAll(itemManager.getItems("InventoryItems"));
+        this.gun.putAll(itemManager.getGunItem("Guns"));
         for (ItemStack itemStack : stItem.values()) {
             this.stItemMetaSet.add(itemStack.getItemMeta());
         }
@@ -57,8 +57,9 @@ public class ShootingTestInv implements Listener {
     }
 
     public void initializeItems() {
-        inventory.addItem(itemManager.createGuiItem(Material.DIAMOND_SWORD, "Example Sword", "Example Lore", "Example Lore2"));
-        inventory.addItem(itemManager.createGuiItem(Material.IRON_HELMET, "Example Helmet", "Example Lore", "Example Lore2"));
+        for (Map.Entry<Integer, ItemStack> guns : gun.entrySet()) {
+            inventory.setItem(guns.getKey(), guns.getValue());
+        }
     }
 
     @EventHandler
