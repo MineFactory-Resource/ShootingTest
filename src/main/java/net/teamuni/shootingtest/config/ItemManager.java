@@ -107,7 +107,6 @@ public class ItemManager {
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
                 gunMeta.lore(loreList);
                 gun.setItemMeta(gunMeta);
-                gun.setAmount(1);
                 guns.put(slot, gun);
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();

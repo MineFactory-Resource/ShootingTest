@@ -59,7 +59,9 @@ public class ShootingTestInv implements Listener {
 
     public void initializeItems() {
         for (Map.Entry<Integer, ItemStack> guns : gun.entrySet()) {
-            inventory.setItem(guns.getKey(), guns.getValue());
+            ItemStack gun = guns.getValue().clone();
+            gun.setAmount(1);
+            inventory.setItem(guns.getKey(), gun);
         }
     }
 
