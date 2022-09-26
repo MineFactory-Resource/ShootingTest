@@ -1,17 +1,18 @@
 package net.teamuni.shootingtest.config;
 
+import net.kyori.adventure.text.Component;
 import net.teamuni.shootingtest.ShootingTest;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ItemManager {
 
@@ -65,9 +66,36 @@ public class ItemManager {
         }
         for (String key : itemKeys) {
             int slot = this.getConfig().getInt(path + "." + key + ".slot");
-            ItemStack item = new ItemStack(Material.valueOf(this.getConfig().getString(path + "." + key + ".item_type")));
-            items.put(slot, item);
+            try {
+                ItemStack item = new ItemStack(Material.valueOf(this.getConfig().getString(path + "." + key + ".item_type")));
+                ItemMeta meta = item.getItemMeta();
+                String itemName = this.getConfig().getString(path + "." + key + ".name");
+                List<Component> loreList = new ArrayList<>();
+
+                for (String lores : this.getConfig().getStringList(path + "." + key + ".lore")) {
+                    loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
+                }
+                meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
+                meta.lore(loreList);
+
+                item.setItemMeta(meta);
+                items.put(slot, item);
+            } catch (NullPointerException | IllegalArgumentException e) {
+                e.printStackTrace();
+            }
         }
         return items;
+    }
+
+    public ItemStack createGuiItem(final Material material, final String name, final String... lore) {
+        final ItemStack item = new ItemStack(material, 1);
+        final ItemMeta meta = item.getItemMeta();
+
+        meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
+        meta.lore(Collections.singletonList(Component.text(ChatColor.translateAlternateColorCodes('&', Arrays.toString(lore)))));
+
+        item.setItemMeta(meta);
+
+        return item;
     }
 }

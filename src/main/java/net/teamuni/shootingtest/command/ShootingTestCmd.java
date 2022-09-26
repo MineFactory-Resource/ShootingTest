@@ -24,7 +24,9 @@ public class ShootingTestCmd implements CommandExecutor {
                 main.reloadConfig();
                 main.getMessageManager().reload();
                 main.getItemManager().reload();
-                player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Shooting Range point has been set!");
+                for (String reloadMessages : main.getMessageManager().getConfig().getStringList("reload_message")) {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadMessages));
+                }
             }
         }
         return false;

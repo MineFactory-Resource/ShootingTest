@@ -2,7 +2,15 @@ Items:
   gun_menu:
     slot: 8
     item_type: "GOLD_NUGGET"
+    name: "&f사격장 메뉴"
+    lore:
+      - ""
+      - "&fGuns 서버에 존재하는 &a모든 총기&f를 사용해보실 수 있습니다."
+      - ""
 
   test:
     slot: 0
     item_type: "IRON_NUGGET"
+    name: "test"
+    lore:
+      - "test"
