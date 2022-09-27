@@ -96,7 +96,7 @@ public class ItemManager {
         for (String key : gunKeys) {
             int slot = this.getConfig().getInt(path + "." + key + ".slot");
             try {
-                ItemStack gun = GunsAPI.getGun(key).getItem();
+                ItemStack gun = GunsAPI.getGun(key).getItem().clone();
                 ItemMeta gunMeta = gun.getItemMeta();
                 String gunName = this.getConfig().getString(path + "." + key + ".name");
                 List<Component> loreList = new ArrayList<>();
@@ -107,6 +107,7 @@ public class ItemManager {
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
                 gunMeta.lore(loreList);
                 gun.setItemMeta(gunMeta);
+                gun.setAmount(1);
                 guns.put(slot, gun);
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();

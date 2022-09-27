@@ -2,6 +2,7 @@ package net.teamuni.shootingtest;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
+import net.teamuni.gunscore.gunslib.object.Gun;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -59,9 +60,7 @@ public class ShootingTestInv implements Listener {
 
     public void initializeItems() {
         for (Map.Entry<Integer, ItemStack> guns : gun.entrySet()) {
-            ItemStack gun = guns.getValue().clone();
-            gun.setAmount(1);
-            inventory.setItem(guns.getKey(), gun);
+            inventory.setItem(guns.getKey(), guns.getValue());
         }
     }
 
@@ -71,7 +70,7 @@ public class ShootingTestInv implements Listener {
         if (event.getCurrentItem() == null || GunsAPI.getGun(event.getCurrentItem()) == null) return;
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
-        player.getInventory().setItem(0, GunsAPI.getGun(event.getCurrentItem()).getItem(player));
+        player.getInventory().setItem(0, GunsAPI.getGun(event.getCurrentItem()).getItem(player).clone());
     }
 
     @EventHandler
