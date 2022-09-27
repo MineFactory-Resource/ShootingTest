@@ -2,7 +2,6 @@ package net.teamuni.shootingtest;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
-import net.teamuni.gunscore.gunslib.object.Gun;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
