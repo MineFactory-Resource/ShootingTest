@@ -70,7 +70,8 @@ public class ShootingTestInv implements Listener {
         if (!event.getInventory().equals(inventory)) return;
         if (event.getCurrentItem() == null || GunsAPI.getGun(event.getCurrentItem()) == null) return;
         event.setCancelled(true);
-        event.getWhoClicked().getInventory().setItem(0, GunsAPI.getGun(event.getCurrentItem()).getItem());
+        Player player = (Player) event.getWhoClicked();
+        player.getInventory().setItem(0, GunsAPI.getGun(event.getCurrentItem()).getItem(player));
     }
 
     @EventHandler
