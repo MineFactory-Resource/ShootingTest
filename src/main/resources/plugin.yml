@@ -2,7 +2,7 @@ name: ShootingTest
 version: '${project.version}'
 main: net.teamuni.shootingtest.ShootingTest
 api-version: 1.18
-depend: [ GunsCore, Multiverse-Core ]
+depend: [ GunsCore, Multiverse-Core, Citizens ]
 commands:
   st:
     permission: st.manage
