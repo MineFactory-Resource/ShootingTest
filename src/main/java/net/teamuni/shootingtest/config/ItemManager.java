@@ -96,7 +96,7 @@ public class ItemManager {
         for (String key : gunKeys) {
             int slot = this.getConfig().getInt(path + "." + key + ".slot");
             try {
-                ItemStack gun = GunsAPI.getGun(key).getItem();
+                ItemStack gun = GunsAPI.getGun(key).getItem().clone();
                 ItemMeta gunMeta = gun.getItemMeta();
                 String gunName = this.getConfig().getString(path + "." + key + ".name");
                 List<Component> loreList = new ArrayList<>();
