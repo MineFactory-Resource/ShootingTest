@@ -19,36 +19,40 @@ public class ShootingTestDummy {
 
     public void createDummy(Player player, String name, Location location) {
         Set<String> npcs = main.getDummyManager().getConfig().getConfigurationSection("dummy").getKeys(false);
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
-        npc.setBukkitEntityType(EntityType.ZOMBIE);
-
         if (npcs.contains(name)) {
             String message = main.getMessageManager().getConfig().getString("dummy_already_exist");
-            if (message == null) return;
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            if (message == null) {
+                player.sendMessage("The name of dummy already exist!");
+            } else {
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            }
             return;
-        } else {
-            main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
-            String message = main.getMessageManager().getConfig().getString("dummy_created");
-            if (message == null) return;
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
         }
 
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
         npc.spawn(location);
         npc.setProtected(false);
+        main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
+
+        String message = main.getMessageManager().getConfig().getString("dummy_created");
+        if (message == null) {
+            player.sendMessage("Dummy has been created successfully!");
+        } else {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        }
     }
 
     public void removeDummy(Player player, String name) {
         String npcUUID = main.getDummyManager().getConfig().getString("dummy." + name);
-        String message = main.getMessageManager().getConfig().getString("dummy_removed");
         if (npcUUID == null) return;
-
-        NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(main.getDummyManager().getConfig().getString("dummy." + name)));
-        npc.destroy();
         main.getDummyManager().getConfig().set("dummy." + name, null);
-        main.getDummyManager().save();
         main.getDummyManager().reload();
 
+        NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
+        if (npc == null) return;
+        npc.destroy();
+
+        String message = main.getMessageManager().getConfig().getString("dummy_removed");
         if (message == null) return;
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
