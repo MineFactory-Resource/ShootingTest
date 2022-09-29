@@ -20,12 +20,8 @@ public class ShootingTestDummy {
     public void createDummy(Player player, String name, Location location) {
         Set<String> npcs = main.getDummyManager().getConfig().getConfigurationSection("dummy").getKeys(false);
         if (npcs.contains(name)) {
-            String message = main.getMessageManager().getConfig().getString("dummy_already_exist");
-            if (message == null) {
-                player.sendMessage("The name of dummy already exist!");
-            } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-            }
+            String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "The name of dummy already exist!");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
 
@@ -34,17 +30,17 @@ public class ShootingTestDummy {
         npc.setProtected(false);
         main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
 
-        String message = main.getMessageManager().getConfig().getString("dummy_created");
-        if (message == null) {
-            player.sendMessage("Dummy has been created successfully!");
-        } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-        }
+        String message = main.getMessageManager().getConfig().getString("dummy_created", "Dummy has been created successfully!");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public void removeDummy(Player player, String name) {
         String npcUUID = main.getDummyManager().getConfig().getString("dummy." + name);
-        if (npcUUID == null) return;
+        if (npcUUID == null) {
+            String message = main.getMessageManager().getConfig().getString("dummy_not_exist", "Dummy try to remove does not exist!");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
         main.getDummyManager().getConfig().set("dummy." + name, null);
         main.getDummyManager().reload();
 
@@ -52,11 +48,7 @@ public class ShootingTestDummy {
         if (npc == null) return;
         npc.destroy();
 
-        String message = main.getMessageManager().getConfig().getString("dummy_removed");
-        if (message == null) {
-            player.sendMessage("Dummy has been removed successfully!");
-        } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-        }
+        String message = main.getMessageManager().getConfig().getString("dummy_removed", "Dummy has been removed successfully!");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }
