@@ -19,7 +19,6 @@ public final class ShootingTest extends JavaPlugin {
     private MessageManager messageManager;
     private DummyManager dummyManager;
     private ShootingTestInv inventory;
-    private ShootingTestDummy dummy;
 
     @Override
     public void onEnable() {
@@ -27,7 +26,6 @@ public final class ShootingTest extends JavaPlugin {
         this.itemManager = new ItemManager(this);
         this.dummyManager = new DummyManager(this);
         this.inventory = new ShootingTestInv(this);
-        this.dummy = new ShootingTestDummy(this);
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(this), this);
         Bukkit.getPluginManager().registerEvents(new ShootingTestInv(this), this);
