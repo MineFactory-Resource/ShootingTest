@@ -6,6 +6,8 @@ depend: [ GunsCore, Multiverse-Core, Citizens ]
 commands:
   st:
     permission: st.manage
+  dummy:
+    permission: st.manage
 permissions:
   st.manage:
     default: op
