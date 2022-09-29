@@ -53,7 +53,10 @@ public class ShootingTestDummy {
         npc.destroy();
 
         String message = main.getMessageManager().getConfig().getString("dummy_removed");
-        if (message == null) return;
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        if (message == null) {
+            player.sendMessage("Dummy has been removed successfully!");
+        } else {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        }
     }
 }
