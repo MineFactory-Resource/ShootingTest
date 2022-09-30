@@ -34,7 +34,7 @@ public final class ShootingTest extends JavaPlugin {
         getCommand("dummy").setExecutor(new DummyCmd(this));
         getCommand("dummy").setTabCompleter(new CommandTabCompleter());
 
-        if (getServer().getPluginManager().getPlugin("Citizens") == null || !getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
+        if (!getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
             getLogger().log(Level.SEVERE, "Citizens is not found or not enabled");
             getServer().getPluginManager().disablePlugin(this);
         }
