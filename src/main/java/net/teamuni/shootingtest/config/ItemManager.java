@@ -68,7 +68,7 @@ public class ItemManager {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : itemKeys) {
-            int slot = this.itemsFile.getInt(path + "." + key + ".slot");
+            int slot = section.getInt(key + ".slot");
             try {
                 ItemStack item = new ItemStack(Material.valueOf(section.getString(key + ".item_type")));
                 ItemMeta meta = item.getItemMeta();
