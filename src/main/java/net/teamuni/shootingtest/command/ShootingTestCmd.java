@@ -16,8 +16,7 @@ public class ShootingTestCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
 
             if (command.getName().equalsIgnoreCase("st") && args[0].equalsIgnoreCase("reload")
                     && player.hasPermission("st.manage")) {
