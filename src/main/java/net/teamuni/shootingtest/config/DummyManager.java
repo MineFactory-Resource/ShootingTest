@@ -73,11 +73,7 @@ public class DummyManager {
         npc.setProtected(false);
 
         LivingEntity entity = (LivingEntity) npc.getEntity();
-        AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        if (maxHealth == null) return;
-        maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
-        entity.setHealth(maxHealth.getBaseValue());
-
+        this.setDummyHealth(entity);
         main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
 
         String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
@@ -100,5 +96,12 @@ public class DummyManager {
 
         String message = main.getMessageManager().getConfig().getString("dummy_removed", "&aDummy has been removed successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    public void setDummyHealth(LivingEntity entity) {
+        AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealth == null) return;
+        maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
+        entity.setHealth(maxHealth.getBaseValue());
     }
 }
