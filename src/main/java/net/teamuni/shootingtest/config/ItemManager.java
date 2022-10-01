@@ -68,14 +68,15 @@ public class ItemManager {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : itemKeys) {
-            int slot = section.getInt(key + ".slot");
+            ConfigurationSection section2 = section.getConfigurationSection(key);
+            int slot = section2.getInt("slot");
             try {
-                ItemStack item = new ItemStack(Material.valueOf(section.getString(key + ".item_type")));
+                ItemStack item = new ItemStack(Material.valueOf(section2.getString("item_type")));
                 ItemMeta meta = item.getItemMeta();
-                String itemName = section.getString(key + ".name");
+                String itemName = section2.getString("name");
                 List<Component> loreList = new ArrayList<>();
 
-                for (String lores : section.getStringList(key + ".lore")) {
+                for (String lores : section2.getStringList("lore")) {
                     loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
                 }
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
@@ -97,14 +98,15 @@ public class ItemManager {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : gunKeys) {
-            int slot = section.getInt(key + ".slot");
+            ConfigurationSection section2 = section.getConfigurationSection(key);
+            int slot = section2.getInt("slot");
             try {
                 ItemStack gun = GunsAPI.getGun(key).getItem().clone();
                 ItemMeta gunMeta = gun.getItemMeta();
-                String gunName = section.getString(key + ".name");
+                String gunName = section2.getString("name");
                 List<Component> loreList = new ArrayList<>();
 
-                for (String lores : section.getStringList(key + ".lore")) {
+                for (String lores : section2.getStringList("lore")) {
                     loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
                 }
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
