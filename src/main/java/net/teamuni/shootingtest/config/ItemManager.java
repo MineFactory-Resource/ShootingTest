@@ -5,6 +5,7 @@ import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -61,19 +62,21 @@ public class ItemManager {
     @NotNull
     public Map<Integer, ItemStack> getItems(String path) {
         Map<Integer, ItemStack> items = new HashMap<>();
-        Set<String> itemKeys = this.getConfig().getConfigurationSection(path).getKeys(false);
+        ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+        Set<String> itemKeys = section.getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : itemKeys) {
-            int slot = this.getConfig().getInt(path + "." + key + ".slot");
+            ConfigurationSection section2 = section.getConfigurationSection(key);
+            int slot = section2.getInt("slot");
             try {
-                ItemStack item = new ItemStack(Material.valueOf(this.getConfig().getString(path + "." + key + ".item_type")));
+                ItemStack item = new ItemStack(Material.valueOf(section2.getString("item_type")));
                 ItemMeta meta = item.getItemMeta();
-                String itemName = this.getConfig().getString(path + "." + key + ".name");
+                String itemName = section2.getString("name");
                 List<Component> loreList = new ArrayList<>();
 
-                for (String lores : this.getConfig().getStringList(path + "." + key + ".lore")) {
+                for (String lores : section2.getStringList("lore")) {
                     loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
                 }
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
@@ -89,19 +92,21 @@ public class ItemManager {
 
     public Map<Integer, ItemStack> getGunItem(String path) {
         Map<Integer, ItemStack> guns = new HashMap<>();
-        Set<String> gunKeys = this.getConfig().getConfigurationSection(path).getKeys(false);
+        ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+        Set<String> gunKeys = section.getKeys(false);
         if (gunKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : gunKeys) {
-            int slot = this.getConfig().getInt(path + "." + key + ".slot");
+            ConfigurationSection section2 = section.getConfigurationSection(key);
+            int slot = section2.getInt("slot");
             try {
                 ItemStack gun = GunsAPI.getGun(key).getItem().clone();
                 ItemMeta gunMeta = gun.getItemMeta();
-                String gunName = this.getConfig().getString(path + "." + key + ".name");
+                String gunName = section2.getString("name");
                 List<Component> loreList = new ArrayList<>();
 
-                for (String lores : this.getConfig().getStringList(path + "." + key + ".lore")) {
+                for (String lores : section2.getStringList("lore")) {
                     loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
                 }
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));

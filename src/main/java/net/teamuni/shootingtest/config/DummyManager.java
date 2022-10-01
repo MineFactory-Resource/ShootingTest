@@ -5,9 +5,12 @@ import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -68,6 +71,9 @@ public class DummyManager {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
         npc.spawn(location);
         npc.setProtected(false);
+
+        LivingEntity entity = (LivingEntity) npc.getEntity();
+        this.setDummyHealth(entity);
         main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
 
         String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
@@ -90,5 +96,12 @@ public class DummyManager {
 
         String message = main.getMessageManager().getConfig().getString("dummy_removed", "&aDummy has been removed successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
+
+    public void setDummyHealth(LivingEntity entity) {
+        AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealth == null) return;
+        maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
+        entity.setHealth(maxHealth.getBaseValue());
     }
 }
