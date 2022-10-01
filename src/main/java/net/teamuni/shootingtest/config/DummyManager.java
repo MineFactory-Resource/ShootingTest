@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
@@ -61,7 +62,8 @@ public class DummyManager {
     }
 
     public void createDummy(Player player, String name, Location location) {
-        Set<String> npcs = main.getDummyManager().getConfig().getConfigurationSection("dummy").getKeys(false);
+        ConfigurationSection section = this.dummyFile.getConfigurationSection("dummy");
+        Set<String> npcs = section.getKeys(false);
         if (npcs.contains(name)) {
             String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "&cThe name of dummy already exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -74,21 +76,22 @@ public class DummyManager {
 
         LivingEntity entity = (LivingEntity) npc.getEntity();
         this.setDummyHealth(entity);
-        main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
+        section.set(name, npc.getUniqueId().toString());
 
         String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public void removeDummy(Player player, String name) {
-        String npcUUID = main.getDummyManager().getConfig().getString("dummy." + name);
+        ConfigurationSection section = this.dummyFile.getConfigurationSection("dummy");
+        String npcUUID = section.getString(name);
         if (npcUUID == null) {
             String message = main.getMessageManager().getConfig().getString("dummy_not_exist", "&cDummy try to remove does not exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
-        main.getDummyManager().getConfig().set("dummy." + name, null);
-        main.getDummyManager().reload();
+        section.set(name, null);
+        this.reload();
 
         NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
         if (npc == null) return;
