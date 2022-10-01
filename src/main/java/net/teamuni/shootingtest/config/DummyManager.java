@@ -73,10 +73,10 @@ public class DummyManager {
         npc.setProtected(false);
 
         LivingEntity entity = (LivingEntity) npc.getEntity();
-        AttributeInstance ai = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        if (ai == null) return;
-        ai.setBaseValue(main.getConfig().getDouble("dummy_health"));
-        entity.setHealth(ai.getBaseValue());
+        AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealth == null) return;
+        maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
+        entity.setHealth(maxHealth.getBaseValue());
 
         main.getDummyManager().getConfig().set("dummy." + name, npc.getUniqueId().toString());
 
