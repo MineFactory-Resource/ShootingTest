@@ -19,6 +19,13 @@ public class CommandTabCompleter implements TabCompleter {
                 tabCompleteList.add("reload");
             }
             return tabCompleteList;
+        } else if (cmd.getName().equalsIgnoreCase("dummy")) {
+            List<String> tabCompleteList = new ArrayList<>();
+            if (args.length == 1) {
+                tabCompleteList.add("create");
+                tabCompleteList.add("remove");
+            }
+            return tabCompleteList;
         }
         return null;
     }
