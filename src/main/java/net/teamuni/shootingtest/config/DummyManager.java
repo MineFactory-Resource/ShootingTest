@@ -23,10 +23,12 @@ public class DummyManager {
     private final ShootingTest main;
     private File file = null;
     private FileConfiguration dummyFile = null;
+    private final ConfigurationSection section;
 
     public DummyManager(ShootingTest instance) {
         this.main = instance;
         createDummyYml();
+        this.section = this.dummyFile.getConfigurationSection("dummy");
     }
 
     public void createDummyYml() {
@@ -62,7 +64,6 @@ public class DummyManager {
     }
 
     public void createDummy(Player player, String name, Location location) {
-        ConfigurationSection section = this.dummyFile.getConfigurationSection("dummy");
         Set<String> npcs = section.getKeys(false);
         if (npcs.contains(name)) {
             String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "&cThe name of dummy already exist!");
@@ -83,7 +84,6 @@ public class DummyManager {
     }
 
     public void removeDummy(Player player, String name) {
-        ConfigurationSection section = this.dummyFile.getConfigurationSection("dummy");
         String npcUUID = section.getString(name);
         if (npcUUID == null) {
             String message = main.getMessageManager().getConfig().getString("dummy_not_exist", "&cDummy try to remove does not exist!");

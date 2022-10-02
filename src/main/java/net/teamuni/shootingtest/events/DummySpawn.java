@@ -11,9 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class DummySpawn implements Listener {
     private final ShootingTest main;
@@ -26,9 +24,10 @@ public class DummySpawn implements Listener {
 
     @EventHandler
     public void onEntitySpawn(NPCSpawnEvent event) {
-        if (dummies.contains(event.getNPC())) {
+        NPC npc = event.getNPC();
+        if (dummies.contains(npc)) {
             if (event.getReason() == SpawnReason.COMMAND || event.getReason() == SpawnReason.RESPAWN || event.getReason() == SpawnReason.CHUNK_LOAD) {
-                LivingEntity entity = (LivingEntity) event.getNPC().getEntity();
+                LivingEntity entity = (LivingEntity) npc.getEntity();
                 main.getDummyManager().setDummyHealth(entity);
             }
         }
