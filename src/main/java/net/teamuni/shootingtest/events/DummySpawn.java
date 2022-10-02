@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class DummySpawn implements Listener {
     private final ShootingTest main;
-    private final List<NPC> npcs = new ArrayList<>();
+    private final List<NPC> dummies = new ArrayList<>();
 
     public DummySpawn(ShootingTest instance) {
         this.main = instance;
@@ -26,7 +26,7 @@ public class DummySpawn implements Listener {
 
     @EventHandler
     public void onEntitySpawn(NPCSpawnEvent event) {
-        if (npcs.contains(event.getNPC())) {
+        if (dummies.contains(event.getNPC())) {
             if (event.getReason() == SpawnReason.COMMAND || event.getReason() == SpawnReason.RESPAWN || event.getReason() == SpawnReason.CHUNK_LOAD) {
                 LivingEntity entity = (LivingEntity) event.getNPC().getEntity();
                 main.getDummyManager().setDummyHealth(entity);
@@ -43,11 +43,11 @@ public class DummySpawn implements Listener {
                 if (npcUUID == null) continue;
                 NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
                 if (npc == null) continue;
-                npcs.add(npc);
+                dummies.add(npc);
 
                 ++numNPCs;
             }
             Bukkit.getLogger().info("[ShootingTest] Get " + numNPCs + " Dummies' info.");
-        }, 5);
+        }, 1L);
     }
 }
