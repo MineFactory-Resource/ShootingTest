@@ -40,6 +40,10 @@ public final class ShootingTest extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Citizens is not found or not enabled");
             getServer().getPluginManager().disablePlugin(this);
         }
+        if (!getServer().getPluginManager().getPlugin("GunsCore").isEnabled()) {
+            getLogger().log(Level.SEVERE, "GunsCore is not found or not enabled");
+            getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override
