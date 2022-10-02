@@ -91,7 +91,7 @@ public class DummyManager {
             return;
         }
         section.set(name, null);
-        this.reload();
+        this.save();
 
         NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
         if (npc == null) return;
