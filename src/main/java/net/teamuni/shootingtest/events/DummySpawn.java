@@ -47,7 +47,7 @@ public class DummySpawn implements Listener {
 
                 ++numNPCs;
             }
-            Bukkit.getLogger().info("[ShootingTest] Get " + numNPCs + " Dummies' info.");
+            Bukkit.getLogger().info("[ShootingTest] Loaded " + numNPCs + " dummy(ies).");
         }, 1L);
     }
 }
