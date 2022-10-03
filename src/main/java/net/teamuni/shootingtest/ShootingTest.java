@@ -7,6 +7,7 @@ import net.teamuni.shootingtest.command.ShootingTestCmd;
 import net.teamuni.shootingtest.config.DummyManager;
 import net.teamuni.shootingtest.config.ItemManager;
 import net.teamuni.shootingtest.config.MessageManager;
+import net.teamuni.shootingtest.events.DummyDamage;
 import net.teamuni.shootingtest.events.DummySpawn;
 import net.teamuni.shootingtest.events.PlayerTeleport;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public final class ShootingTest extends JavaPlugin {
     private MessageManager messageManager;
     private DummyManager dummyManager;
     private ShootingTestInv inventory;
+    private DummySpawn dummySpawn;
 
     @Override
     public void onEnable() {
@@ -27,10 +29,12 @@ public final class ShootingTest extends JavaPlugin {
         this.itemManager = new ItemManager(this);
         this.dummyManager = new DummyManager(this);
         this.inventory = new ShootingTestInv(this);
+        this.dummySpawn = new DummySpawn(this);
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(this), this);
         Bukkit.getPluginManager().registerEvents(this.inventory, this);
-        Bukkit.getPluginManager().registerEvents(new DummySpawn(this), this);
+        Bukkit.getPluginManager().registerEvents(this.dummySpawn, this);
+        Bukkit.getPluginManager().registerEvents(new DummyDamage(this), this);
         getCommand("st").setExecutor(new ShootingTestCmd(this));
         getCommand("st").setTabCompleter(new CommandTabCompleter());
         getCommand("dummy").setExecutor(new DummyCmd(this));

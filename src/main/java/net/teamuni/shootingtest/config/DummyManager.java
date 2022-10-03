@@ -1,6 +1,7 @@
 package net.teamuni.shootingtest.config;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.ChatColor;
@@ -64,38 +65,42 @@ public class DummyManager {
     }
 
     public void createDummy(Player player, String name, Location location) {
-        Set<String> npcs = section.getKeys(false);
-        if (npcs.contains(name)) {
+        Set<String> dummies = section.getKeys(false);
+        if (dummies.contains(name)) {
             String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "&cThe name of dummy already exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
 
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
-        npc.spawn(location);
-        npc.setProtected(false);
-
-        LivingEntity entity = (LivingEntity) npc.getEntity();
-        this.setDummyHealth(entity);
-        section.set(name, npc.getUniqueId().toString());
+        NPC dummy = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
+        this.createDummyInfo(section, dummy, name, location);
+        main.getDummySpawn().getDummies().add(dummy);
+        dummy.spawn(location, SpawnReason.CREATE);
+        dummy.setProtected(false);
 
         String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public void removeDummy(Player player, String name) {
-        String npcUUID = section.getString(name);
+        ConfigurationSection section1 = section.getConfigurationSection(name);
+        if (section1 == null) {
+            String message = main.getMessageManager().getConfig().getString("dummy_not_exist", "&cDummy try to remove does not exist!");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
+
+        String npcUUID = section1.getString("uuid");
         if (npcUUID == null) {
             String message = main.getMessageManager().getConfig().getString("dummy_not_exist", "&cDummy try to remove does not exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
-        section.set(name, null);
-        this.save();
 
-        NPC npc = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
-        if (npc == null) return;
-        npc.destroy();
+        NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(UUID.fromString(npcUUID));
+        if (dummy == null) return;
+        dummy.destroy();
+        section.set(name, null);
 
         String message = main.getMessageManager().getConfig().getString("dummy_removed", "&aDummy has been removed successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -106,5 +111,18 @@ public class DummyManager {
         if (maxHealth == null) return;
         maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
         entity.setHealth(maxHealth.getBaseValue());
+    }
+
+    public void createDummyInfo(ConfigurationSection section, NPC npc, String name, Location location) {
+        ConfigurationSection section1 = section.createSection(name);
+        section1.set("uuid", npc.getUniqueId().toString());
+
+        ConfigurationSection section2 = section1.createSection("location");
+        section2.set("world", location.getWorld().getName());
+        section2.set("x", location.getX());
+        section2.set("y", location.getY());
+        section2.set("z", location.getZ());
+        section2.set("yaw", location.getYaw());
+        section2.set("pitch", location.getPitch());
     }
 }
