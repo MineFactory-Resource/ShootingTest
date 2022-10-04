@@ -61,6 +61,7 @@ public class DummyRespawn implements Listener {
         NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(event.getEntity().getUniqueId());
         if (dummy == null) return;
         if (!dummies.contains(dummy)) return;
+        event.setDroppedExp(0);
 
         runnableMap.remove(dummy).cancel();
         scheduleRespawn(dummy, getLocation(dummy));
