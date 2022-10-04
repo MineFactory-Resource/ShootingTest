@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class DummyRespawn implements Listener {
     private final ShootingTest main;
@@ -32,8 +33,14 @@ public class DummyRespawn implements Listener {
 
     @EventHandler
     public void onSpawn(NPCSpawnEvent event) {
+        List<String> worlds = main.getConfig().getStringList("enable_world");
         NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(event.getNPC().getUniqueId());
         if (!dummies.contains(dummy)) return;
+        if (!worlds.contains(dummy.getEntity().getWorld().getName())) {
+            Bukkit.getLogger().log(Level.SEVERE, "The spawn of a dummy named " + dummy.getName() + " has been canceled. Caused by: Invalid world");
+            event.setCancelled(true);
+            return;
+        }
         if (Arrays.asList(SpawnReason.values()).contains(event.getReason())) {
             LivingEntity entity = (LivingEntity) dummy.getEntity();
             main.getDummyManager().setDummyHealth(entity);
