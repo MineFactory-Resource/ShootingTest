@@ -65,7 +65,7 @@ public class DummyRespawn implements Listener {
                 (float) section1.getDouble("pitch"));
 
         runnableMap.remove(dummy).cancel();
-        this.scheduleRespawn(dummy, dummyLoc);
+        scheduleRespawn(dummy, dummyLoc);
     }
 
     public void loadDummies() {

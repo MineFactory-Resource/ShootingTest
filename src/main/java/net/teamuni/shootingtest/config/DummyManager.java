@@ -109,7 +109,11 @@ public class DummyManager {
     public void setDummyHealth(LivingEntity entity) {
         AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (maxHealth == null) return;
-        maxHealth.setBaseValue(main.getConfig().getDouble("dummy_health"));
+        double health = main.getConfig().getDouble("dummy_health");
+        if (health <= 0) {
+            health = 1;
+        }
+        maxHealth.setBaseValue(health);
         entity.setHealth(maxHealth.getBaseValue());
     }
 
