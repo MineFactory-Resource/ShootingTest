@@ -74,7 +74,7 @@ public class DummyManager {
 
         NPC dummy = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
         this.createDummyInfo(section, dummy, name, location);
-        main.getDummySpawn().getDummies().add(dummy);
+        main.getDummyRespawn().getDummies().add(dummy);
         dummy.spawn(location, SpawnReason.CREATE);
         dummy.setProtected(false);
 

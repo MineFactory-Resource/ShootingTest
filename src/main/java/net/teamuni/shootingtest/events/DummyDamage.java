@@ -20,7 +20,7 @@ public class DummyDamage implements Listener {
         Entity entity = event.getEntity();
         NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(entity.getUniqueId());
         if (dummy == null) return;
-        if (!main.getDummySpawn().getDummies().contains(dummy)) return;
+        if (!main.getDummyRespawn().getDummies().contains(dummy)) return;
         entity.setFireTicks(0);
         event.setCancelled(true);
     }

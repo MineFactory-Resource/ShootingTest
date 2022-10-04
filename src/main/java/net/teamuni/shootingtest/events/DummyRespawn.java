@@ -19,13 +19,13 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class DummySpawn implements Listener {
+public class DummyRespawn implements Listener {
     private final ShootingTest main;
     @Getter
     private final Set<NPC> dummies = new HashSet<>();
     private final Map<NPC, BukkitRunnable> runnableMap = new HashMap<>();
 
-    public DummySpawn(ShootingTest instance) {
+    public DummyRespawn(ShootingTest instance) {
         this.main = instance;
         this.loadDummies();
     }
