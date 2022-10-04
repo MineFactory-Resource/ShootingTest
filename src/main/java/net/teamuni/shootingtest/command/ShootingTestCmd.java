@@ -23,6 +23,7 @@ public class ShootingTestCmd implements CommandExecutor {
                 main.reloadConfig();
                 main.getMessageManager().reload();
                 main.getItemManager().reload();
+                main.getDummyRespawn().respawnDummies();
                 for (String reloadMessages : main.getMessageManager().getConfig().getStringList("reload_message")) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadMessages));
                 }

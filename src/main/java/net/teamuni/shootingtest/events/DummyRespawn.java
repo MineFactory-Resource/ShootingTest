@@ -2,6 +2,7 @@ package net.teamuni.shootingtest.events;
 
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.DespawnReason;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
@@ -54,18 +55,8 @@ public class DummyRespawn implements Listener {
         if (dummy == null) return;
         if (!dummies.contains(dummy)) return;
 
-        ConfigurationSection section = main.getDummyManager().getConfig().getConfigurationSection("dummy." + dummy.getName());
-        ConfigurationSection section1 = section.getConfigurationSection("location");
-        Location dummyLoc = new Location(
-                Bukkit.getServer().getWorld(section1.getString("world")),
-                section1.getDouble("x"),
-                section1.getDouble("y"),
-                section1.getDouble("z"),
-                (float) section1.getDouble("yaw"),
-                (float) section1.getDouble("pitch"));
-
         runnableMap.remove(dummy).cancel();
-        scheduleRespawn(dummy, dummyLoc);
+        scheduleRespawn(dummy, getLocation(dummy));
     }
 
     public void loadDummies() {
@@ -95,5 +86,25 @@ public class DummyRespawn implements Listener {
             delay = 21;
         }
         new RespawnTask(npc, location).register(main, delay);
+    }
+
+    public void respawnDummies() {
+        for (NPC dummy : dummies) {
+            dummy.despawn(DespawnReason.PENDING_RESPAWN);
+            dummy.spawn(getLocation(dummy), SpawnReason.RESPAWN);
+        }
+    }
+
+    public Location getLocation(NPC dummy) {
+        ConfigurationSection section = main.getDummyManager().getConfig().getConfigurationSection("dummy." + dummy.getName());
+        ConfigurationSection section1 = section.getConfigurationSection("location");
+
+        return new Location(
+                Bukkit.getServer().getWorld(section1.getString("world")),
+                section1.getDouble("x"),
+                section1.getDouble("y"),
+                section1.getDouble("z"),
+                (float) section1.getDouble("yaw"),
+                (float) section1.getDouble("pitch"));
     }
 }
