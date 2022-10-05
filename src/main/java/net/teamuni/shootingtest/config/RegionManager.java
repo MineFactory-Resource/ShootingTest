@@ -1,8 +1,12 @@
 package net.teamuni.shootingtest.config;
 
 import net.teamuni.shootingtest.ShootingTest;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.util.BlockIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,5 +50,18 @@ public class RegionManager {
         }
 
         this.regionFile = YamlConfiguration.loadConfiguration(file);
+    }
+
+    public final Block getTargetBlock(Player player, int range) {
+        BlockIterator iter = new BlockIterator(player, range);
+        Block lastBlock = iter.next();
+        while (iter.hasNext()) {
+            lastBlock = iter.next();
+            if (lastBlock.getType() == Material.AIR) {
+                continue;
+            }
+            break;
+        }
+        return lastBlock;
     }
 }
