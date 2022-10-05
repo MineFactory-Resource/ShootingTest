@@ -7,6 +7,7 @@ import net.teamuni.shootingtest.command.ShootingTestCmd;
 import net.teamuni.shootingtest.config.DummyManager;
 import net.teamuni.shootingtest.config.ItemManager;
 import net.teamuni.shootingtest.config.MessageManager;
+import net.teamuni.shootingtest.config.RegionManager;
 import net.teamuni.shootingtest.events.DummyDamage;
 import net.teamuni.shootingtest.events.DummyRespawn;
 import net.teamuni.shootingtest.events.PlayerTeleport;
@@ -20,6 +21,7 @@ public final class ShootingTest extends JavaPlugin {
     private ItemManager itemManager;
     private MessageManager messageManager;
     private DummyManager dummyManager;
+    private RegionManager regionManager;
     private ShootingTestInv inventory;
     private DummyRespawn dummyRespawn;
 
@@ -28,6 +30,7 @@ public final class ShootingTest extends JavaPlugin {
         this.messageManager = new MessageManager(this);
         this.itemManager = new ItemManager(this);
         this.dummyManager = new DummyManager(this);
+        this.regionManager = new RegionManager(this);
         this.inventory = new ShootingTestInv(this);
         this.dummyRespawn = new DummyRespawn(this);
         saveDefaultConfig();
