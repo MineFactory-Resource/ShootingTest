@@ -57,5 +57,6 @@ public final class ShootingTest extends JavaPlugin {
     public void onDisable() {
         saveConfig();
         this.getDummyManager().save();
+        this.getRegionManager().save();
     }
 }
