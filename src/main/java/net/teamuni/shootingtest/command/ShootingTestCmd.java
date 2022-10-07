@@ -89,6 +89,12 @@ public class ShootingTestCmd implements CommandExecutor {
                             sendWarningMsg(player);
                             break;
                     }
+                } else if (args[0].equalsIgnoreCase("wand")) {
+                    if (args.length != 1) {
+                        sendWarningMsg(player);
+                        return false;
+                    }
+                    main.getItemManager().giveWand(player);
                 }
             }
         }

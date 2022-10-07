@@ -29,8 +29,8 @@ public final class ShootingTest extends JavaPlugin {
     public void onEnable() {
         this.messageManager = new MessageManager(this);
         this.itemManager = new ItemManager(this);
-        this.dummyManager = new DummyManager(this);
         this.regionManager = new RegionManager(this);
+        this.dummyManager = new DummyManager(this);
         this.inventory = new ShootingTestInv(this);
         this.dummyRespawn = new DummyRespawn(this);
         saveDefaultConfig();

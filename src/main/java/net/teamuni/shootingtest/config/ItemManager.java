@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -119,5 +121,24 @@ public class ItemManager {
             }
         }
         return guns;
+    }
+
+    public void giveWand(Player player) {
+        ConfigurationSection section = this.itemsFile.getConfigurationSection("Region_wand_item");
+        if (section == null) return;
+        Material material = Material.valueOf(section.getString("item_type"));
+        ItemStack itemStack = new ItemStack(material, 1);
+        ItemMeta meta = itemStack.getItemMeta();
+        String name = section.getString("name", "wand");
+        List<Component> loreList = new ArrayList<>();
+
+        for (String lores : section.getStringList("lore")) {
+            loreList.add(Component.text(ChatColor.translateAlternateColorCodes('&', lores)));
+        }
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
+        meta.lore(loreList);
+        itemStack.setItemMeta(meta);
+        player.getInventory().addItem(itemStack);
     }
 }

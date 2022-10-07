@@ -20,6 +20,7 @@ public class CommandTabCompleter implements TabCompleter {
                 tabCompleteList.add("reload");
                 tabCompleteList.add("region");
                 tabCompleteList.add("help");
+                tabCompleteList.add("wand");
             } else if (args.length == 2 && args[0].equalsIgnoreCase("region")) {
                 tabCompleteList.add("create");
                 tabCompleteList.add("remove");
