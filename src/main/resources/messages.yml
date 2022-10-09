@@ -2,10 +2,9 @@ reload_message:
   - ""
 incorrect_command: "명령어를 실행할 수 없습니다."
 commands:
-  - "&6/st region create {name}:&f 지역 {name} 생성"
-  - "&6/st region remove {name}:&f 지역 {name} 제거"
-  - "&6/st region set {name} position 1:&f {name}의 위치1을 플레이어가 바라보고 있는 블럭의 위치로 설정."
-  - "&6/st region set {name} position 2:&f {name}의 위치2를 플레이어가 바라보고 있는 블럭의 위치로 설정."
+  - "&6/st wand:&f 인벤토리에 지역 좌표 1, 2를 설정할 수 있는 완드 지급."
+  - "&6/st region create {name}:&f 지역 {name} 생성."
+  - "&6/st region remove {name}:&f 지역 {name} 제거."
   - "&6/st region see list:&f 지역 목록 확인."
   - "&6/st region see positions {name}:&f {name}의 position 정보 확인."
 
