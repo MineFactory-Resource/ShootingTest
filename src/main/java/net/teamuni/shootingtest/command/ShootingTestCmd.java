@@ -56,20 +56,6 @@ public class ShootingTestCmd implements CommandExecutor {
                             }
                             main.getRegionManager().removeRegion(player, args[2]);
                             break;
-                        case "set":
-                            if (args.length != 5) {
-                                sendWarningMsg(player);
-                                return false;
-                            }
-                            if (args[4].equals("1")) {
-                                main.getRegionManager().setFirstPosition(player, args[2]);
-                            } else if (args[4].equals("2")) {
-                                main.getRegionManager().setSecondPosition(player, args[2]);
-                            } else {
-                                sendWarningMsg(player);
-                                return false;
-                            }
-                            break;
                         case "see":
                             if (args[2].equalsIgnoreCase("list")) {
                                 if (args.length != 3) {

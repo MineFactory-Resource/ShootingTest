@@ -24,7 +24,6 @@ public class CommandTabCompleter implements TabCompleter {
             } else if (args.length == 2 && args[0].equalsIgnoreCase("region")) {
                 tabCompleteList.add("create");
                 tabCompleteList.add("remove");
-                tabCompleteList.add("set");
                 tabCompleteList.add("see");
             } else {
                 switch (args[1]) {
@@ -32,16 +31,6 @@ public class CommandTabCompleter implements TabCompleter {
                     case "remove":
                         if (args.length == 3) {
                             tabCompleteList.add("{name}");
-                        }
-                        break;
-                    case "set":
-                        switch (args.length) {
-                            case 3 -> tabCompleteList.add("{name}");
-                            case 4 -> tabCompleteList.add("position");
-                            case 5 -> {
-                                tabCompleteList.add("1");
-                                tabCompleteList.add("2");
-                            }
                         }
                         break;
                     case "see":

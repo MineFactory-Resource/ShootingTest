@@ -4,13 +4,10 @@ import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +19,7 @@ public class RegionManager {
     private File file = null;
     private FileConfiguration regionFile = null;
     private final ConfigurationSection section;
+
     public RegionManager(ShootingTest instance) {
         this.main = instance;
         createRegionYml();
@@ -63,27 +61,34 @@ public class RegionManager {
         this.regionFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public final Block getTargetBlock(Player player, int range) {
-        BlockIterator iter = new BlockIterator(player, range);
-        Block lastBlock = iter.next();
-        while (iter.hasNext()) {
-            lastBlock = iter.next();
-            if (lastBlock.getType() == Material.AIR) {
-                continue;
-            }
-            break;
-        }
-        return lastBlock;
-    }
-
     public void createRegion(Player player, String name) {
+        Location firstPos = main.getSetRegion().getPositionMap().get("first_position");
+        Location secondPos = main.getSetRegion().getPositionMap().get("second_position");
         Set<String> regions = section.getKeys(false);
+
+        if (firstPos == null || secondPos == null) {
+            String message = main.getMessageManager().getConfig().getString("region_insufficient_info", "&cInsufficient information to create a region.");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
         if (regions.contains(name)) {
             String message = main.getMessageManager().getConfig().getString("region_already_exist", "&cThe name of region already exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
+
         section.createSection(name);
+        ConfigurationSection section1 = section.getConfigurationSection(name);
+        assert section1 != null;
+        section1.createSection("first_position");
+        section1.createSection("second_position");
+        ConfigurationSection section2 = section1.getConfigurationSection("first_position");
+        ConfigurationSection section3 = section1.getConfigurationSection("second_position");
+        assert section2 != null;
+        assert section3 != null;
+        savePosition(section2, firstPos);
+        savePosition(section3, secondPos);
+        main.getSetRegion().getPositionMap().clear();
 
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -100,34 +105,6 @@ public class RegionManager {
 
         String message = main.getMessageManager().getConfig().getString("region_removed", "&aRegion has been removed successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-    }
-
-    public void setFirstPosition(Player player, String name) {
-        ConfigurationSection section1 = section.getConfigurationSection(name);
-        if (section1 == null) {
-            String message = main.getMessageManager().getConfig().getString("region_not_exist", "&cA region try to set position does not exist!");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-            return;
-        }
-        ConfigurationSection section2 = section1.createSection("first_position");
-        Location blockLoc = this.getTargetBlock(player, 20).getLocation();
-        String locationInfo = blockLoc.getX() + ", " + blockLoc.getBlockY() + ", " + blockLoc.getBlockZ();
-        this.savePosition(section2, blockLoc);
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "First position is set to the position (" + locationInfo + ") of the block you are looking at.");
-    }
-
-    public void setSecondPosition(Player player, String name) {
-        ConfigurationSection section1 = section.getConfigurationSection(name);
-        if (section1 == null) {
-            String message = main.getMessageManager().getConfig().getString("region_not_exist", "&cA region try to set position does not exist!");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-            return;
-        }
-        ConfigurationSection section2 = section1.createSection("second_position");
-        Location blockLoc = this.getTargetBlock(player, 20).getLocation();
-        String locationInfo = blockLoc.getX() + ", " + blockLoc.getY() + ", " + blockLoc.getZ();
-        this.savePosition(section2, blockLoc);
-        player.sendMessage(ChatColor.LIGHT_PURPLE + "Second position is set to the position (" + locationInfo + ") of the block you are looking at.");
     }
 
     public void seeRegions(Player player) {

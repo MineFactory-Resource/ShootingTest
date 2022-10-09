@@ -11,6 +11,7 @@ import net.teamuni.shootingtest.config.RegionManager;
 import net.teamuni.shootingtest.events.DummyDamage;
 import net.teamuni.shootingtest.events.DummyRespawn;
 import net.teamuni.shootingtest.events.PlayerTeleport;
+import net.teamuni.shootingtest.events.SetRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +25,7 @@ public final class ShootingTest extends JavaPlugin {
     private RegionManager regionManager;
     private ShootingTestInv inventory;
     private DummyRespawn dummyRespawn;
+    private SetRegion setRegion;
 
     @Override
     public void onEnable() {
@@ -33,10 +35,12 @@ public final class ShootingTest extends JavaPlugin {
         this.dummyManager = new DummyManager(this);
         this.inventory = new ShootingTestInv(this);
         this.dummyRespawn = new DummyRespawn(this);
+        this.setRegion = new SetRegion(this);
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(this), this);
         Bukkit.getPluginManager().registerEvents(this.inventory, this);
         Bukkit.getPluginManager().registerEvents(this.dummyRespawn, this);
+        Bukkit.getPluginManager().registerEvents(this.setRegion, this);
         Bukkit.getPluginManager().registerEvents(new DummyDamage(this), this);
         getCommand("st").setExecutor(new ShootingTestCmd(this));
         getCommand("st").setTabCompleter(new CommandTabCompleter());
