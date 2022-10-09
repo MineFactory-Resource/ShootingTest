@@ -25,5 +25,8 @@ public class PlayerTeleport implements Listener {
         } else if (worlds.contains(event.getFrom().getWorld().getName())) {
             main.getInventory().returnPlayerInv(player);
         }
+        if (!event.getFrom().getWorld().equals(event.getTo().getWorld())) {
+            main.getSetRegion().getPositionMap().clear();
+        }
     }
 }
