@@ -124,8 +124,12 @@ public class ItemManager {
     }
 
     public void giveWand(Player player) {
+        player.getInventory().addItem(getRegionWand());
+    }
+
+    public ItemStack getRegionWand() {
         ConfigurationSection section = this.itemsFile.getConfigurationSection("Region_wand_item");
-        if (section == null) return;
+        if (section == null) return null;
         Material material = Material.valueOf(section.getString("item_type"));
         ItemStack itemStack = new ItemStack(material, 1);
         ItemMeta meta = itemStack.getItemMeta();
@@ -139,6 +143,7 @@ public class ItemManager {
         meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', name)));
         meta.lore(loreList);
         itemStack.setItemMeta(meta);
-        player.getInventory().addItem(itemStack);
+
+        return itemStack;
     }
 }
