@@ -127,6 +127,12 @@ public class ItemManager {
         player.getInventory().addItem(getRegionWand());
     }
 
+    public List<ItemStack> getMenuItemList() {
+        List<ItemStack> menuItems = new ArrayList<>();
+        menuItems.addAll(this.getItems("InventoryItems").values());
+        return menuItems;
+    }
+
     public ItemStack getRegionWand() {
         ConfigurationSection section = this.itemsFile.getConfigurationSection("Region_wand_item");
         if (section == null) return null;

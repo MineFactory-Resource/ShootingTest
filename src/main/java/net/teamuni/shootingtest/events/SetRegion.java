@@ -27,17 +27,19 @@ public class SetRegion implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
-        if (block == null) return;
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
-        String locationInfo = block.getX() + ", " + block.getY() + ", " + block.getZ();
-        if (event.getAction() == Action.LEFT_CLICK_BLOCK && hasWandOnHand(player)) {
-            positionMap.put("first_position", block.getLocation());
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "First position is set to the position (" + locationInfo + ").");
-        }
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && hasWandOnHand(player)) {
-            positionMap.put("second_position", block.getLocation());
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "Second position is set to the position (" + locationInfo + ").");
+        if (hasWandOnHand(player)) {
+            Block block = event.getClickedBlock();
+            if (block == null) return;
+            if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+            String locationInfo = block.getX() + ", " + block.getY() + ", " + block.getZ();
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                positionMap.put("first_position", block.getLocation());
+                player.sendMessage(ChatColor.LIGHT_PURPLE + "First position is set to the position (" + locationInfo + ").");
+            }
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                positionMap.put("second_position", block.getLocation());
+                player.sendMessage(ChatColor.LIGHT_PURPLE + "Second position is set to the position (" + locationInfo + ").");
+            }
         }
     }
 

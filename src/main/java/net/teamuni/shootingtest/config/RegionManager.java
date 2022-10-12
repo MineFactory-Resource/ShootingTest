@@ -1,6 +1,8 @@
 package net.teamuni.shootingtest.config;
 
+import lombok.Getter;
 import net.teamuni.shootingtest.ShootingTest;
+import net.teamuni.shootingtest.region.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,6 +13,8 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -19,6 +23,8 @@ public class RegionManager {
     private File file = null;
     private FileConfiguration regionFile = null;
     private final ConfigurationSection section;
+    @Getter
+    private final Map<String, Cuboid> region = new HashMap<>();
 
     public RegionManager(ShootingTest instance) {
         this.main = instance;
@@ -27,6 +33,7 @@ public class RegionManager {
         if (section == null) {
             Bukkit.getLogger().log(Level.SEVERE, "[ShootingTest] Doesn't exist the region section in region.yml.");
         }
+        registerRegion();
     }
 
     public void createRegionYml() {
@@ -62,11 +69,11 @@ public class RegionManager {
     }
 
     public void createRegion(Player player, String name) {
-        Location firstPos = main.getSetRegion().getPositionMap().get("first_position");
-        Location secondPos = main.getSetRegion().getPositionMap().get("second_position");
+        Location pos1 = main.getSetRegion().getPositionMap().get("first_position");
+        Location pos2 = main.getSetRegion().getPositionMap().get("second_position");
         Set<String> regions = section.getKeys(false);
 
-        if (firstPos == null || secondPos == null) {
+        if (pos1 == null || pos2 == null) {
             String message = main.getMessageManager().getConfig().getString("region_insufficient_info", "&cInsufficient information to create a region.");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
@@ -80,14 +87,11 @@ public class RegionManager {
         section.createSection(name);
         ConfigurationSection section1 = section.getConfigurationSection(name);
         assert section1 != null;
-        section1.createSection("first_position");
-        section1.createSection("second_position");
-        ConfigurationSection section2 = section1.getConfigurationSection("first_position");
-        ConfigurationSection section3 = section1.getConfigurationSection("second_position");
-        assert section2 != null;
-        assert section3 != null;
-        savePosition(section2, firstPos);
-        savePosition(section3, secondPos);
+        ConfigurationSection section2 = section1.createSection("first_position");
+        ConfigurationSection section3 = section1.createSection("second_position");
+        savePosition(section2, pos1);
+        savePosition(section3, pos2);
+        region.put(name, new Cuboid(pos1, pos2));
         main.getSetRegion().getPositionMap().clear();
 
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
@@ -102,6 +106,7 @@ public class RegionManager {
             return;
         }
         section.set(name, null);
+        region.remove(name);
 
         String message = main.getMessageManager().getConfig().getString("region_removed", "&aRegion has been removed successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -146,5 +151,24 @@ public class RegionManager {
         section.set("x", location.getX());
         section.set("y", location.getY());
         section.set("z", location.getZ());
+    }
+
+    public void registerRegion() {
+        if (section.getKeys(false).isEmpty()) return;
+        for (String regionName : section.getKeys(false)) {
+            ConfigurationSection section1 = section.getConfigurationSection(regionName);
+            if (section1 == null) continue;
+            ConfigurationSection section2 = section1.getConfigurationSection("first_position");
+            ConfigurationSection section3 = section1.getConfigurationSection("second_position");
+            Location pos1 = new Location(Bukkit.getServer().getWorld(section2.getString("world")),
+                    section2.getDouble("x"),
+                    section2.getDouble("y"),
+                    section2.getDouble("z"));
+            Location pos2 = new Location(Bukkit.getServer().getWorld(section3.getString("world")),
+                    section3.getDouble("x"),
+                    section3.getDouble("y"),
+                    section3.getDouble("z"));
+            region.put(regionName, new Cuboid(pos1, pos2));
+        }
     }
 }

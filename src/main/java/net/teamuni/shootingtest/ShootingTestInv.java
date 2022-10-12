@@ -1,5 +1,6 @@
 package net.teamuni.shootingtest;
 
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.shootingtest.config.ItemManager;
@@ -25,12 +26,11 @@ public class ShootingTestInv implements Listener {
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
     private final Map<Integer, ItemStack> gun = new HashMap<>();
+    @Getter
     private final Set<ItemMeta> stItemMetaSet = new HashSet<>();
     private final Inventory inventory;
-    private final ShootingTest main;
 
     public ShootingTestInv(ShootingTest instance) {
-        this.main = instance;
         ItemManager itemManager = instance.getItemManager();
         this.stItem.putAll(itemManager.getItems("InventoryItems"));
         this.gun.putAll(itemManager.getGunItem("Guns"));
@@ -81,11 +81,8 @@ public class ShootingTestInv implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        List<String> worlds = main.getConfig().getStringList("enable_world");
-
+        if (!stItemMetaSet.contains(player.getInventory().getItemInMainHand().getItemMeta())) return;
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (!worlds.contains(player.getWorld().getName())) return;
-            if (!stItemMetaSet.contains(player.getInventory().getItemInMainHand().getItemMeta())) return;
             player.openInventory(inventory);
         }
     }
