@@ -1,8 +1,9 @@
 package net.teamuni.shootingtest.config;
 
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import lombok.Getter;
 import net.teamuni.shootingtest.ShootingTest;
-import net.teamuni.shootingtest.region.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,7 +25,7 @@ public class RegionManager {
     private FileConfiguration regionFile = null;
     private final ConfigurationSection section;
     @Getter
-    private final Map<String, Cuboid> region = new HashMap<>();
+    private final Map<String, ProtectedCuboidRegion> region = new HashMap<>();
 
     public RegionManager(ShootingTest instance) {
         this.main = instance;
@@ -91,7 +92,7 @@ public class RegionManager {
         ConfigurationSection section3 = section1.createSection("second_position");
         savePosition(section2, pos1);
         savePosition(section3, pos2);
-        region.put(name, new Cuboid(pos1, pos2));
+        region.put(name, new ProtectedCuboidRegion(name, getBlockVector3(pos1), getBlockVector3(pos2)));
         main.getSetRegion().getPositionMap().clear();
 
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
@@ -168,7 +169,11 @@ public class RegionManager {
                     section3.getDouble("x"),
                     section3.getDouble("y"),
                     section3.getDouble("z"));
-            region.put(regionName, new Cuboid(pos1, pos2));
+            region.put(regionName, new ProtectedCuboidRegion(regionName, getBlockVector3(pos1), getBlockVector3(pos2)));
         }
+    }
+
+    public BlockVector3 getBlockVector3(Location loc) {
+        return BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 }

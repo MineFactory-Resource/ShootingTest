@@ -1,5 +1,6 @@
 package net.teamuni.shootingtest.events;
 
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.DespawnReason;
@@ -8,7 +9,6 @@ import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.RespawnTask;
 import net.teamuni.shootingtest.ShootingTest;
-import net.teamuni.shootingtest.region.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,9 +35,9 @@ public class DummyRespawn implements Listener {
     @EventHandler
     public void onSpawn(NPCSpawnEvent event) {
         NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(event.getNPC().getUniqueId());
-        for (Cuboid cuboid : main.getRegionManager().getRegion().values()) {
+        for (ProtectedCuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
             if (!dummies.contains(dummy)) continue;
-            if (!cuboid.contains(getLocation(dummy))) {
+            if (!cuboid.contains(main.getRegionManager().getBlockVector3(getLocation(dummy)))) {
                 event.setCancelled(true);
                 continue;
             }

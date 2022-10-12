@@ -1,7 +1,9 @@
 package net.teamuni.shootingtest.events;
 
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import net.teamuni.shootingtest.ShootingTest;
-import net.teamuni.shootingtest.region.Cuboid;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,13 +27,13 @@ public class PlayerMove implements Listener {
                 && event.getFrom().getBlockY() == event.getTo().getBlockY()
                 && event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
         Player player = event.getPlayer();
-        for (Cuboid cuboid : main.getRegionManager().getRegion().values()) {
-            if (cuboid.contains(event.getTo())
-                    && !cuboid.contains(event.getFrom())) {
+        for (ProtectedCuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
+            if (cuboid.contains(getBlockVector3(event.getTo()))
+                    && !cuboid.contains(getBlockVector3(event.getFrom()))) {
                 if (hasMenuItem(player)) continue;
                 main.getInventory().setPlayerInv(player);
-            } else if (!cuboid.contains(event.getTo())
-                    && cuboid.contains(event.getFrom())) {
+            } else if (!cuboid.contains(getBlockVector3(event.getTo()))
+                    && cuboid.contains(getBlockVector3(event.getFrom()))) {
                 if (!hasMenuItem(player)) continue;
                 main.getInventory().returnPlayerInv(player);
             }
@@ -51,5 +53,9 @@ public class PlayerMove implements Listener {
         }
         itemList.clear();
         return false;
+    }
+
+    private BlockVector3 getBlockVector3(Location loc) {
+        return main.getRegionManager().getBlockVector3(loc);
     }
 }

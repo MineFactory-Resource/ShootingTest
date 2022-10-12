@@ -1,10 +1,10 @@
 package net.teamuni.shootingtest.config;
 
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.ShootingTest;
-import net.teamuni.shootingtest.region.Cuboid;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -66,8 +66,8 @@ public class DummyManager {
     }
 
     public void createDummy(Player player, String name, Location location) {
-        for (Cuboid cuboid : main.getRegionManager().getRegion().values()) {
-            if (!cuboid.contains(player.getLocation())) {
+        for (ProtectedCuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
+            if (!cuboid.contains(main.getRegionManager().getBlockVector3(player.getLocation()))) {
                 String message = main.getMessageManager().getConfig().getString("dummy_invalid_location", "&cYou cannot create a dummy here.");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
                 continue;
