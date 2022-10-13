@@ -35,24 +35,18 @@ public class DummyRespawn implements Listener {
     @EventHandler
     public void onSpawn(NPCSpawnEvent event) {
         NPC dummy = CitizensAPI.getNPCRegistry().getByUniqueId(event.getNPC().getUniqueId());
-        for (ProtectedCuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
-            if (!dummies.contains(dummy)) continue;
-            if (!cuboid.contains(main.getRegionManager().getBlockVector3(getLocation(dummy)))) {
-                event.setCancelled(true);
-                continue;
-            }
-            if (Arrays.asList(SpawnReason.values()).contains(event.getReason())) {
-                LivingEntity entity = (LivingEntity) dummy.getEntity();
-                main.getDummyManager().setDummyHealth(entity);
-                BukkitRunnable runnable = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        entity.setVelocity(new Vector(0, 0, 0));
-                    }
-                };
-                runnable.runTaskTimer(main, 1L, 1L);
-                runnableMap.put(dummy, runnable);
-            }
+        if (!dummies.contains(dummy)) return;
+        if (Arrays.asList(SpawnReason.values()).contains(event.getReason())) {
+            LivingEntity entity = (LivingEntity) dummy.getEntity();
+            main.getDummyManager().setDummyHealth(entity);
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    entity.setVelocity(new Vector(0, 0, 0));
+                }
+            };
+            runnable.runTaskTimer(main, 1L, 1L);
+            runnableMap.put(dummy, runnable);
         }
     }
 

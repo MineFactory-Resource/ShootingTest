@@ -66,28 +66,21 @@ public class DummyManager {
     }
 
     public void createDummy(Player player, String name, Location location) {
-        for (ProtectedCuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
-            if (!cuboid.contains(main.getRegionManager().getBlockVector3(player.getLocation()))) {
-                String message = main.getMessageManager().getConfig().getString("dummy_invalid_location", "&cYou cannot create a dummy here.");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-                continue;
-            }
-            Set<String> dummies = section.getKeys(false);
-            if (dummies.contains(name)) {
-                String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "&cThe name of dummy already exist!");
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-                continue;
-            }
-
-            NPC dummy = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
-            this.createDummyInfo(section, dummy, name, location);
-            main.getDummyRespawn().getDummies().add(dummy);
-            dummy.spawn(location, SpawnReason.CREATE);
-            dummy.setProtected(false);
-
-            String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
+        Set<String> dummies = section.getKeys(false);
+        if (dummies.contains(name)) {
+            String message = main.getMessageManager().getConfig().getString("dummy_already_exist", "&cThe name of dummy already exist!");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
         }
+
+        NPC dummy = CitizensAPI.getNPCRegistry().createNPC(EntityType.ZOMBIE, name);
+        this.createDummyInfo(section, dummy, name, location);
+        main.getDummyRespawn().getDummies().add(dummy);
+        dummy.spawn(location, SpawnReason.CREATE);
+        dummy.setProtected(false);
+
+        String message = main.getMessageManager().getConfig().getString("dummy_created", "&aDummy has been created successfully!");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public void removeDummy(Player player, String name) {
