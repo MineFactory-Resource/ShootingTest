@@ -1,6 +1,5 @@
 package net.teamuni.shootingtest.config;
 
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;

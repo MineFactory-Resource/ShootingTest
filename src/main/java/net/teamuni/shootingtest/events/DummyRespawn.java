@@ -1,6 +1,5 @@
 package net.teamuni.shootingtest.events;
 
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.DespawnReason;
