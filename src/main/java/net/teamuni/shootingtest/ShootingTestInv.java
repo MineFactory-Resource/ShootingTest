@@ -23,6 +23,7 @@ import java.util.*;
 public class ShootingTestInv implements Listener {
 
     @NotNull
+    @Getter
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, ItemStack> stItem = new HashMap<>();
     private final Map<Integer, ItemStack> gun = new HashMap<>();

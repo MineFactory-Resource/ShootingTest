@@ -11,12 +11,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 public class RegionManager {
@@ -111,6 +110,15 @@ public class RegionManager {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
+        for (Player playerInRegion : getPlayerInRegion(region.get(name))) {
+            UUID playerUUID = playerInRegion.getUniqueId();
+            ItemStack[] invBeforeEnterRegion = main.getInventory().getPlayerInventory().get(playerUUID);
+            if (invBeforeEnterRegion == null) continue;
+            playerInRegion.getInventory().clear();
+            playerInRegion.getInventory().setContents(invBeforeEnterRegion);
+            main.getInventory().getPlayerInventory().remove(playerUUID);
+        }
+
         section.set(name, null);
         region.remove(name);
 
@@ -182,5 +190,17 @@ public class RegionManager {
 
     public BlockVector3 getBlockVector3(Location loc) {
         return BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+    }
+
+    public List<Player> getPlayerInRegion(ProtectedCuboidRegion cuboidRegion) {
+        List<Player> playersInRegion = new ArrayList<>();
+        for (Player player : main.getServer().getOnlinePlayers()) {
+            Location loc = player.getLocation();
+            if (cuboidRegion.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+                playersInRegion.add(player);
+            }
+        }
+
+        return playersInRegion;
     }
 }
