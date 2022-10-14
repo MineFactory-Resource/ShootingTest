@@ -84,7 +84,12 @@ public class RegionManager {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
-
+        if (!name.matches("^[A-Za-z0-9,'+/_-]+")) {
+            String message = main.getMessageManager().getConfig().getString("region_invalid_syntax",
+                    "&cThe name of region is not valid syntax. Region names are only valid if they contain A-Z, a-z, 0-9, underscores, commas, single quotation marks, dashes, pluses, or forward slashes.");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
         section.createSection(name);
         ConfigurationSection section1 = section.getConfigurationSection(name);
         assert section1 != null;
@@ -124,7 +129,7 @@ public class RegionManager {
         int number = 0;
         for (String keys : regionKeys) {
             ++number;
-            player.sendMessage(ChatColor.AQUA + String.valueOf(number) + ". " + keys);
+            player.sendMessage(ChatColor.GRAY + String.valueOf(number) + ". " + keys);
         }
     }
 

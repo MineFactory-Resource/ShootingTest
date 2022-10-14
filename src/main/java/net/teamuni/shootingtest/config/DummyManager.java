@@ -142,7 +142,7 @@ public class DummyManager {
         int number = 0;
         for (String keys : dummyKeys) {
             ++number;
-            player.sendMessage(ChatColor.AQUA + String.valueOf(number) + ". " + keys);
+            player.sendMessage(ChatColor.GRAY + String.valueOf(number) + ". " + keys);
         }
     }
 
