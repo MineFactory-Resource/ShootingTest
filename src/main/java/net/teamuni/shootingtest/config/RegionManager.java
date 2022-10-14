@@ -169,7 +169,6 @@ public class RegionManager {
 
     public void registerRegion() {
         Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
-            if (section.getKeys(false).isEmpty()) return;
             int number = 0;
             for (String regionName : section.getKeys(false)) {
                 ConfigurationSection section1 = section.getConfigurationSection(regionName);
