@@ -129,7 +129,7 @@ public class RegionManager {
         int number = 0;
         for (String keys : regionKeys) {
             ++number;
-            player.sendMessage(ChatColor.GRAY + String.valueOf(number) + ". " + keys);
+            player.sendMessage(ChatColor.GOLD + String.valueOf(number) + ". " + keys);
         }
     }
 

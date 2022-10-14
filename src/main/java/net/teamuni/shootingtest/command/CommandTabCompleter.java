@@ -35,10 +35,12 @@ public class CommandTabCompleter implements TabCompleter {
                         }
                     }
                 } else if (args[0].equalsIgnoreCase("dummy")) {
-                    tabCompleteList.add("create");
-                    tabCompleteList.add("remove");
-                    tabCompleteList.add("list");
-                    tabCompleteList.add("tp");
+                    if (args.length == 2) {
+                        tabCompleteList.add("create");
+                        tabCompleteList.add("remove");
+                        tabCompleteList.add("list");
+                        tabCompleteList.add("tp");
+                    }
                 }
                 return tabCompleteList;
             }
