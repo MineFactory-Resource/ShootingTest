@@ -146,4 +146,18 @@ public class ItemManager {
 
         return itemStack;
     }
+
+    public boolean hasMenuItem(Player player) {
+        Set<ItemMeta> menuItemMeta = main.getInventory().getStItemMetaSet();
+        Set<ItemMeta> invItemMetaSet = new HashSet<>();
+        for (int i = 0; i <= 8; i++) {
+            if (player.getInventory().getItem(i) == null) continue;
+            invItemMetaSet.add(player.getInventory().getItem(i).getItemMeta());
+        }
+        for (ItemMeta invItemMeta : invItemMetaSet) {
+            if (invItemMeta == null) continue;
+            if (menuItemMeta.contains(invItemMeta)) return true;
+        }
+        return false;
+    }
 }

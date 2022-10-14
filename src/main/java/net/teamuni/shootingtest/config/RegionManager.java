@@ -1,12 +1,14 @@
 package net.teamuni.shootingtest.config;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import lombok.Getter;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,7 +26,7 @@ public class RegionManager {
     private FileConfiguration regionFile = null;
     private final ConfigurationSection section;
     @Getter
-    private final Map<String, ProtectedCuboidRegion> region = new HashMap<>();
+    private final Map<String, CuboidRegion> region = new HashMap<>();
 
     public RegionManager(ShootingTest instance) {
         this.main = instance;
@@ -96,7 +98,7 @@ public class RegionManager {
         ConfigurationSection section3 = section1.createSection("second_position");
         savePosition(section2, pos1);
         savePosition(section3, pos2);
-        region.put(name, new ProtectedCuboidRegion(name, getBlockVector3(pos1), getBlockVector3(pos2)));
+        region.put(name, new CuboidRegion(BukkitAdapter.adapt(pos1.getWorld()), getBlockVector3(pos1), getBlockVector3(pos2)));
         main.getSetRegion().getPositionMap().clear();
 
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
@@ -169,38 +171,45 @@ public class RegionManager {
     }
 
     public void registerRegion() {
-        if (section.getKeys(false).isEmpty()) return;
-        for (String regionName : section.getKeys(false)) {
-            ConfigurationSection section1 = section.getConfigurationSection(regionName);
-            if (section1 == null) continue;
-            ConfigurationSection section2 = section1.getConfigurationSection("first_position");
-            if (section2 == null) continue;
-            ConfigurationSection section3 = section1.getConfigurationSection("second_position");
-            if (section3 == null) continue;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+            if (section.getKeys(false).isEmpty()) return;
+            int number = 0;
+            for (String regionName : section.getKeys(false)) {
+                ConfigurationSection section1 = section.getConfigurationSection(regionName);
+                if (section1 == null) continue;
+                ConfigurationSection section2 = section1.getConfigurationSection("first_position");
+                if (section2 == null) continue;
+                ConfigurationSection section3 = section1.getConfigurationSection("second_position");
+                if (section3 == null) continue;
+                World world = Bukkit.getWorld(section2.getString("world"));
+                if (world == null) continue;
 
-            BlockVector3 pos1 = BlockVector3.at(section2.getDouble("x"),
-                    section2.getDouble("y"),
-                    section2.getDouble("z"));
-            BlockVector3 pos2 = BlockVector3.at(section3.getDouble("x"),
-                    section3.getDouble("y"),
-                    section3.getDouble("z"));
-            region.put(regionName, new ProtectedCuboidRegion(regionName, pos1, pos2));
-        }
+                BlockVector3 pos1 = BlockVector3.at(section2.getDouble("x"),
+                        section2.getDouble("y"),
+                        section2.getDouble("z"));
+                BlockVector3 pos2 = BlockVector3.at(section3.getDouble("x"),
+                        section3.getDouble("y"),
+                        section3.getDouble("z"));
+
+                region.put(regionName, new CuboidRegion(BukkitAdapter.adapt(world), pos1, pos2));
+                ++number;
+            }
+            Bukkit.getLogger().info("[ShootingTest] Loaded " + number + " region(s).");
+        }, 1L);
     }
 
     public BlockVector3 getBlockVector3(Location loc) {
         return BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
-    public List<Player> getPlayerInRegion(ProtectedCuboidRegion cuboidRegion) {
+    public List<Player> getPlayerInRegion(CuboidRegion cuboidRegion) {
         List<Player> playersInRegion = new ArrayList<>();
         for (Player player : main.getServer().getOnlinePlayers()) {
             Location loc = player.getLocation();
-            if (cuboidRegion.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+            if (cuboidRegion.contains(getBlockVector3(loc))) {
                 playersInRegion.add(player);
             }
         }
-
         return playersInRegion;
     }
 }

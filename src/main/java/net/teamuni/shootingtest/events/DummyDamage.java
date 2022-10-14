@@ -1,6 +1,6 @@
 package net.teamuni.shootingtest.events;
 
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.ShootingTest;
@@ -32,7 +32,7 @@ public class DummyDamage implements Listener {
     }
 
     public boolean isInRegion(LivingEntity entity) {
-        for (ProtectedCuboidRegion region : main.getRegionManager().getRegion().values()) {
+        for (CuboidRegion region : main.getRegionManager().getRegion().values()) {
             if (region.contains(main.getRegionManager().getBlockVector3(entity.getLocation()))) {
                 return true;
             }
