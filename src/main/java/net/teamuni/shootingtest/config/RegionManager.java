@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,9 +97,13 @@ public class RegionManager {
         ConfigurationSection section3 = section1.createSection("second_position");
         savePosition(section2, pos1);
         savePosition(section3, pos2);
-        region.put(name, new CuboidRegion(BukkitAdapter.adapt(pos1.getWorld()), getBlockVector3(pos1), getBlockVector3(pos2)));
+        CuboidRegion cuboidRegion = new CuboidRegion(BukkitAdapter.adapt(pos1.getWorld()), getBlockVector3(pos1), getBlockVector3(pos2));
+        region.put(name, cuboidRegion);
         main.getSetRegion().getPositionMap().clear();
 
+        for (Player playerInRegion : getPlayerInRegion(cuboidRegion)) {
+            main.getInventory().setPlayerInv(playerInRegion);
+        }
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
@@ -113,14 +116,8 @@ public class RegionManager {
             return;
         }
         for (Player playerInRegion : getPlayerInRegion(region.get(name))) {
-            UUID playerUUID = playerInRegion.getUniqueId();
-            ItemStack[] invBeforeEnterRegion = main.getInventory().getPlayerInventory().get(playerUUID);
-            if (invBeforeEnterRegion == null) continue;
-            playerInRegion.getInventory().clear();
-            playerInRegion.getInventory().setContents(invBeforeEnterRegion);
-            main.getInventory().getPlayerInventory().remove(playerUUID);
+            main.getInventory().returnPlayerInv(playerInRegion);
         }
-
         section.set(name, null);
         region.remove(name);
 
