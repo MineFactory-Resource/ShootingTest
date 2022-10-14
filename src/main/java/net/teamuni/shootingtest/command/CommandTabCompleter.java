@@ -30,11 +30,9 @@ public class CommandTabCompleter implements TabCompleter {
                         tabCompleteList.add("see");
                     }
                     if (args.length > 1) {
-                        if (args[1].equals("see")) {
-                            if (args.length == 3) {
-                                tabCompleteList.add("list");
-                                tabCompleteList.add("positions");
-                            }
+                        if (args.length == 3 && args[1].equals("see")) {
+                            tabCompleteList.add("list");
+                            tabCompleteList.add("positions");
                         }
                     }
                 } else if (args[0].equalsIgnoreCase("dummy")) {
