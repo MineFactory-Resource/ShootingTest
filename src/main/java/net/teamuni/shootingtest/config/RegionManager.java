@@ -118,6 +118,7 @@ public class RegionManager {
         if (regionKeys.isEmpty()) {
             String message = main.getMessageManager().getConfig().getString("region_empty", "&cThere are no regions to see.");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
         }
         player.sendMessage(ChatColor.YELLOW + "----------- " + ChatColor.WHITE + "List of region" + ChatColor.YELLOW + " -----------");
         int number = 0;
@@ -160,16 +161,17 @@ public class RegionManager {
             ConfigurationSection section1 = section.getConfigurationSection(regionName);
             if (section1 == null) continue;
             ConfigurationSection section2 = section1.getConfigurationSection("first_position");
+            if (section2 == null) continue;
             ConfigurationSection section3 = section1.getConfigurationSection("second_position");
-            Location pos1 = new Location(Bukkit.getServer().getWorld(section2.getString("world")),
-                    section2.getDouble("x"),
+            if (section3 == null) continue;
+
+            BlockVector3 pos1 = BlockVector3.at(section2.getDouble("x"),
                     section2.getDouble("y"),
                     section2.getDouble("z"));
-            Location pos2 = new Location(Bukkit.getServer().getWorld(section3.getString("world")),
-                    section3.getDouble("x"),
+            BlockVector3 pos2 = BlockVector3.at(section3.getDouble("x"),
                     section3.getDouble("y"),
                     section3.getDouble("z"));
-            region.put(regionName, new ProtectedCuboidRegion(regionName, getBlockVector3(pos1), getBlockVector3(pos2)));
+            region.put(regionName, new ProtectedCuboidRegion(regionName, pos1, pos2));
         }
     }
 

@@ -2,7 +2,6 @@ package net.teamuni.shootingtest;
 
 import lombok.Getter;
 import net.teamuni.shootingtest.command.CommandTabCompleter;
-import net.teamuni.shootingtest.command.DummyCmd;
 import net.teamuni.shootingtest.command.ShootingTestCmd;
 import net.teamuni.shootingtest.config.DummyManager;
 import net.teamuni.shootingtest.config.ItemManager;
@@ -42,8 +41,6 @@ public final class ShootingTest extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerMove(this), this);
         getCommand("st").setExecutor(new ShootingTestCmd(this));
         getCommand("st").setTabCompleter(new CommandTabCompleter());
-        getCommand("dummy").setExecutor(new DummyCmd(this));
-        getCommand("dummy").setTabCompleter(new CommandTabCompleter());
 
         if (!getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
             getLogger().log(Level.SEVERE, "Citizens is not found or not enabled");

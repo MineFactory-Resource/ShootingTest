@@ -10,8 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerMove implements Listener {
@@ -41,17 +40,16 @@ public class PlayerMove implements Listener {
     }
 
     public boolean hasMenuItem(Player player) {
-        Set<ItemMeta> items = main.getInventory().getStItemMetaSet();
-        List<ItemMeta> itemList = new ArrayList<>();
+        Set<ItemMeta> menuItemMeta = main.getInventory().getStItemMetaSet();
+        Set<ItemMeta> invItemMetaSet = new HashSet<>();
         for (int i = 0; i <= 8; i++) {
             if (player.getInventory().getItem(i) == null) continue;
-            itemList.add(player.getInventory().getItem(i).getItemMeta());
+            invItemMetaSet.add(player.getInventory().getItem(i).getItemMeta());
         }
-        for (ItemMeta item : itemList) {
-            if (item == null) continue;
-            if (items.contains(item)) return true;
+        for (ItemMeta invItemMeta : invItemMetaSet) {
+            if (invItemMeta == null) continue;
+            if (menuItemMeta.contains(invItemMeta)) return true;
         }
-        itemList.clear();
         return false;
     }
 

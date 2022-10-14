@@ -21,11 +21,18 @@ public class CommandTabCompleter implements TabCompleter {
                 tabCompleteList.add("region");
                 tabCompleteList.add("help");
                 tabCompleteList.add("wand");
-            } else if (args.length == 2 && args[0].equalsIgnoreCase("region")) {
-                tabCompleteList.add("create");
-                tabCompleteList.add("remove");
-                tabCompleteList.add("see");
-            } else {
+                tabCompleteList.add("dummy");
+            } else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("region")) {
+                    tabCompleteList.add("create");
+                    tabCompleteList.add("remove");
+                    tabCompleteList.add("see");
+                } else if (args[0].equalsIgnoreCase("dummy")) {
+                    tabCompleteList.add("create");
+                    tabCompleteList.add("remove");
+                }
+            }
+            if (args[0].equalsIgnoreCase("region")) {
                 switch (args[1]) {
                     case "create":
                     case "remove":
@@ -45,13 +52,6 @@ public class CommandTabCompleter implements TabCompleter {
                     default:
                         break;
                 }
-            }
-            return tabCompleteList;
-        } else if (cmd.getName().equalsIgnoreCase("dummy")) {
-            List<String> tabCompleteList = new ArrayList<>();
-            if (args.length == 1) {
-                tabCompleteList.add("create");
-                tabCompleteList.add("remove");
             }
             return tabCompleteList;
         }

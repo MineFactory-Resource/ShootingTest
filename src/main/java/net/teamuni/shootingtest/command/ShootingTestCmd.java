@@ -81,6 +81,18 @@ public class ShootingTestCmd implements CommandExecutor {
                         return false;
                     }
                     main.getItemManager().giveWand(player);
+                } else if (args[0].equalsIgnoreCase("dummy")) {
+                    if (args.length != 3) {
+                        sendWarningMsg(player);
+                        return false;
+                    }
+                    if (args[1].equalsIgnoreCase("create")) {
+                        main.getDummyManager().createDummy(player, args[2], player.getLocation());
+                        return false;
+                    } else if (args[1].equalsIgnoreCase("remove")) {
+                        main.getDummyManager().removeDummy(player, args[2]);
+                        return false;
+                    }
                 }
             }
         }
