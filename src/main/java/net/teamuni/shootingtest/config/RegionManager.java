@@ -120,11 +120,11 @@ public class RegionManager {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
             return;
         }
-        player.sendMessage(ChatColor.YELLOW + "----------- " + ChatColor.WHITE + "List of region" + ChatColor.YELLOW + " -----------");
+        player.sendMessage(ChatColor.YELLOW + "----------- " + ChatColor.WHITE + "List of regions" + ChatColor.YELLOW + " -----------");
         int number = 0;
         for (String keys : regionKeys) {
             ++number;
-            player.sendMessage(ChatColor.GOLD + String.valueOf(number) + ". " + keys);
+            player.sendMessage(ChatColor.AQUA + String.valueOf(number) + ". " + keys);
         }
     }
 

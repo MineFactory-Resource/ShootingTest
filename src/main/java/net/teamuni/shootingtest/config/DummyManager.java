@@ -4,6 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.teamuni.shootingtest.ShootingTest;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -128,5 +129,37 @@ public class DummyManager {
         section2.set("z", location.getZ());
         section2.set("yaw", location.getYaw());
         section2.set("pitch", location.getPitch());
+    }
+
+    public void seeDummies(Player player) {
+        Set<String> dummyKeys = section.getKeys(false);
+        if (dummyKeys.isEmpty()) {
+            String message = main.getMessageManager().getConfig().getString("dummy_empty", "&cThere are no dummies to see.");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            return;
+        }
+        player.sendMessage(ChatColor.YELLOW + "----------- " + ChatColor.WHITE + "List of dummies" + ChatColor.YELLOW + " -----------");
+        int number = 0;
+        for (String keys : dummyKeys) {
+            ++number;
+            player.sendMessage(ChatColor.AQUA + String.valueOf(number) + ". " + keys);
+        }
+    }
+
+    public void teleportToDummy(Player player, String name) {
+        ConfigurationSection section1 = section.getConfigurationSection(name);
+        if (section1 == null) return;
+        ConfigurationSection section2 = section1.getConfigurationSection("location");
+        if (section2 == null) return;
+
+        Location location = new Location(Bukkit.getServer().getWorld(section2.getString("world")),
+                section2.getDouble("x"),
+                section2.getDouble("y"),
+                section2.getDouble("z"));
+
+        player.teleport(location);
+
+        String message = main.getMessageManager().getConfig().getString("teleport_to_dummy", "&6Teleport to " + name);
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 }
