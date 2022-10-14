@@ -24,13 +24,12 @@ public class CommandTabCompleter implements TabCompleter {
                     tabCompleteList.add("dummy");
                 }
                 if (args[0].equalsIgnoreCase("region")) {
-                    if (args.length == 2) {
-                        tabCompleteList.add("create");
-                        tabCompleteList.add("remove");
-                        tabCompleteList.add("see");
-                    }
                     if (args.length > 1) {
-                        if (args.length == 3 && args[1].equals("see")) {
+                        if (args.length == 2) {
+                            tabCompleteList.add("create");
+                            tabCompleteList.add("remove");
+                            tabCompleteList.add("see");
+                        } else if (args.length == 3 && args[1].equals("see")) {
                             tabCompleteList.add("list");
                             tabCompleteList.add("positions");
                         }
