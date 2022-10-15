@@ -22,12 +22,6 @@ public class PlayerTeleport implements Listener {
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         for (CuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
-            if (!isSameWorld(cuboid, event.getTo().getWorld())) {
-                if (main.getItemManager().hasMenuItem(player)) {
-                    main.getInventory().returnPlayerInv(player);
-                }
-                continue;
-            }
             if (isInRegion(cuboid, event.getTo()) && !isInRegion(cuboid, event.getFrom())) {
                 if (main.getItemManager().hasMenuItem(player)) continue;
                 main.getInventory().setPlayerInv(player);
@@ -46,6 +40,9 @@ public class PlayerTeleport implements Listener {
     }
 
     private boolean isInRegion(CuboidRegion region, Location location) {
+        if (!isSameWorld(region, location.getWorld())) {
+            return false;
+        }
         return region.contains(getBlockVector3(location));
     }
 

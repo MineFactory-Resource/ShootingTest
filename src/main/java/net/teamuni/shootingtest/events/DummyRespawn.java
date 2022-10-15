@@ -37,6 +37,7 @@ public class DummyRespawn implements Listener {
         if (!dummies.contains(dummy)) return;
         if (Arrays.asList(SpawnReason.values()).contains(event.getReason())) {
             LivingEntity entity = (LivingEntity) dummy.getEntity();
+            entity.setSilent(true);
             main.getDummyManager().setDummyHealth(entity);
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
