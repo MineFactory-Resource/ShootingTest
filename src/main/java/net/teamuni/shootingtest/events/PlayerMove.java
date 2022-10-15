@@ -8,17 +8,20 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
-public class PlayerTeleport implements Listener {
+public class PlayerMove implements Listener {
     private final ShootingTest main;
 
-    public PlayerTeleport(ShootingTest instance) {
+    public PlayerMove(ShootingTest instance) {
         this.main = instance;
     }
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.getFrom().getBlockX() == event.getTo().getBlockX()
+                && event.getFrom().getBlockY() == event.getTo().getBlockY()
+                && event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
         Player player = event.getPlayer();
         for (CuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
             if (!cuboid.getWorld().equals(BukkitAdapter.adapt(player.getWorld()))) continue;
@@ -30,9 +33,6 @@ public class PlayerTeleport implements Listener {
                 main.getInventory().returnPlayerInv(player);
             }
         }
-        if (event.getFrom().getWorld().equals(event.getTo().getWorld())) return;
-        if (main.getSetRegion().getPositionMap().isEmpty()) return;
-        main.getSetRegion().getPositionMap().clear();
     }
 
     private BlockVector3 getBlockVector3(Location loc) {
