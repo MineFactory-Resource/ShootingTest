@@ -5,6 +5,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +25,12 @@ public class PlayerMove implements Listener {
                 && event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
         Player player = event.getPlayer();
         for (CuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
-            if (!cuboid.getWorld().equals(BukkitAdapter.adapt(player.getWorld()))) continue;
+            if (!isSameWorld(cuboid, event.getTo().getWorld())) {
+                if (main.getItemManager().hasMenuItem(player)) {
+                    main.getInventory().returnPlayerInv(player);
+                }
+                continue;
+            }
             if (isInRegion(cuboid, event.getTo()) && !isInRegion(cuboid, event.getFrom())) {
                 if (main.getItemManager().hasMenuItem(player)) continue;
                 main.getInventory().setPlayerInv(player);
@@ -41,5 +47,9 @@ public class PlayerMove implements Listener {
 
     private boolean isInRegion(CuboidRegion region, Location location) {
         return region.contains(getBlockVector3(location));
+    }
+
+    private boolean isSameWorld(CuboidRegion region, World world) {
+        return region.getWorld().equals(BukkitAdapter.adapt(world));
     }
 }
