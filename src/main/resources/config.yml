@@ -1,4 +1,2 @@
-enable_world:
-  - ""
 dummy_health: 100
 dummy_respawn_delay: 100 #ticks
