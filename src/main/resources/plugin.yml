@@ -4,7 +4,7 @@ main: net.teamuni.shootingtest.ShootingTest
 api-version: 1.18
 depend: [ GunsCore, Multiverse-Core, Citizens, WorldGuard ]
 commands:
-  st:
+  사격장:
     permission: st.manage
 permissions:
   st.manage:

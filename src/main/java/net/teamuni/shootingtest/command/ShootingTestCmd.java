@@ -19,7 +19,7 @@ public class ShootingTestCmd implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
 
-            if (command.getName().equalsIgnoreCase("st") && player.hasPermission("st.manage")) {
+            if (command.getName().equalsIgnoreCase("사격장") && player.hasPermission("st.manage")) {
                 switch (args[0]) {
                     case "reload" -> {
                         if (args.length != 1) {

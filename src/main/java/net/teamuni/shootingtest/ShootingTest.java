@@ -39,8 +39,8 @@ public final class ShootingTest extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DummyDamage(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleport(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMove(this), this);
-        getCommand("st").setExecutor(new ShootingTestCmd(this));
-        getCommand("st").setTabCompleter(new CommandTabCompleter());
+        getCommand("사격장").setExecutor(new ShootingTestCmd(this));
+        getCommand("사격장").setTabCompleter(new CommandTabCompleter());
 
         if (!getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
             getLogger().log(Level.SEVERE, "Citizens is not found or not enabled");
