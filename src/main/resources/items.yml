@@ -1,11 +1,21 @@
 InventoryItems:
   gun_menu:
-    slot: 8
-    item_type: "GOLD_NUGGET"
-    name: "&f사격장 메뉴"
+    slot: 0
+    type: "MENU"
+    item_type: "GHAST_TEAR"
+    name: "&f총 선택하기"
     lore:
       - ""
       - "&fGuns 서버에 존재하는 &a모든 총기&f를 사용해보실 수 있습니다."
+      - ""
+  lobby:
+    slot: 8
+    type: "SPAWN"
+    item_type: "PAPER"
+    name: "&f스폰으로 이동하기"
+    lore:
+      - ""
+      - "&f우클릭 시 &6스폰&f으로 이동합니다."
       - ""
 Guns:
   Ak-47:

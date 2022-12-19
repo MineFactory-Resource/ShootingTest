@@ -63,7 +63,7 @@
         </repository>
         <repository>
             <id>localrepository</id>
-            <url>file://${project.basedir}/libs/GunsCore-0.1.6-all.jar</url>
+            <url>file://${project.basedir}/libs</url>
         </repository>
         <repository>
             <id>citizens-repo</id>
@@ -93,7 +93,7 @@
             <artifactId>GunsCore</artifactId>
             <version>0.1.6</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/GunsCore-0.1.6-all.jar</systemPath>
+            <systemPath>${project.basedir}/libs/GunsCore-0.1.6-6c7881.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>

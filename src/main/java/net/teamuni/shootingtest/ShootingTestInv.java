@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -86,5 +87,9 @@ public class ShootingTestInv implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             player.openInventory(inventory);
         }
+    }
+
+    public enum ItemType {
+        SPAWN, MENU, UNKNOWN
     }
 }
