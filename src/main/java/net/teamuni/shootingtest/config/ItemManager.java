@@ -13,10 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class ItemManager {
@@ -40,20 +38,6 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public FileConfiguration getConfig() {
-        return this.itemsFile;
-    }
-
-    public void save() {
-        if (this.file == null || this.itemsFile == null) return;
-
-        try {
-            getConfig().save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void reload() {
         if (this.file == null) {
             this.file = new File(main.getDataFolder(), "items.yml");
@@ -62,21 +46,22 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    @NotNull
     public Map<Integer, ItemStack> getItems(String path) {
         Map<Integer, ItemStack> items = new HashMap<>();
         ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+        if (section == null) return null;
         Set<String> itemKeys = section.getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : itemKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
+            if (section2 == null) continue;
             int slot = section2.getInt("slot");
             try {
                 ItemStack item = new ItemStack(Material.valueOf(section2.getString("item_type")));
                 ItemMeta meta = item.getItemMeta();
-                String itemName = section2.getString("name");
+                String itemName = section2.getString("name", "");
                 List<Component> loreList = new ArrayList<>();
 
                 for (String lores : section2.getStringList("lore")) {
@@ -96,19 +81,21 @@ public class ItemManager {
     public Map<Integer, ItemStack> getGunItem(String path) {
         Map<Integer, ItemStack> guns = new HashMap<>();
         ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+        if (section == null) return null;
         Set<String> gunKeys = section.getKeys(false);
         if (gunKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
         for (String key : gunKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
+            if (section2 == null) continue;
             int slot = section2.getInt("slot");
             try {
                 Gun gun = GunsAPI.getGun(key);
                 if (gun == null) continue;
                 ItemStack gunItem = gun.getItem();
                 ItemMeta gunMeta = gunItem.getItemMeta();
-                String gunName = section2.getString("name");
+                String gunName = section2.getString("name", "");
                 List<Component> loreList = new ArrayList<>();
 
                 for (String lores : section2.getStringList("lore")) {
@@ -154,8 +141,9 @@ public class ItemManager {
         Set<ItemMeta> menuItemMeta = main.getInventory().getStItemMetaSet();
         Set<ItemMeta> invItemMetaSet = new HashSet<>();
         for (int i = 0; i <= 8; i++) {
-            if (player.getInventory().getItem(i) == null) continue;
-            invItemMetaSet.add(player.getInventory().getItem(i).getItemMeta());
+            ItemStack item = player.getInventory().getItem(i);
+            if (item == null) continue;
+            invItemMetaSet.add(item.getItemMeta());
         }
         for (ItemMeta invItemMeta : invItemMetaSet) {
             if (invItemMeta == null) continue;
