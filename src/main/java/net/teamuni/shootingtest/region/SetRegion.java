@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.events;
+package net.teamuni.shootingtest.region;
 
 import lombok.Getter;
 import net.teamuni.shootingtest.ShootingTest;

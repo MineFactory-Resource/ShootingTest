@@ -3,11 +3,15 @@ package net.teamuni.shootingtest;
 import lombok.Getter;
 import net.teamuni.shootingtest.command.CommandTabCompleter;
 import net.teamuni.shootingtest.command.ShootingTestCmd;
-import net.teamuni.shootingtest.config.DummyManager;
+import net.teamuni.shootingtest.config.ShootingTestInv;
+import net.teamuni.shootingtest.dummy.DummyDamage;
+import net.teamuni.shootingtest.dummy.DummyManager;
 import net.teamuni.shootingtest.config.ItemManager;
 import net.teamuni.shootingtest.config.MessageManager;
-import net.teamuni.shootingtest.config.RegionManager;
+import net.teamuni.shootingtest.dummy.DummyRespawn;
+import net.teamuni.shootingtest.region.RegionManager;
 import net.teamuni.shootingtest.events.*;
+import net.teamuni.shootingtest.region.SetRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

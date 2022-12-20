@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.events;
+package net.teamuni.shootingtest.dummy;
 
 import com.sk89q.worldedit.regions.CuboidRegion;
 import net.citizensnpcs.api.CitizensAPI;

@@ -2,6 +2,7 @@ package net.teamuni.shootingtest.config;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
+import net.teamuni.gunscore.gunslib.object.Gun;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -103,8 +104,10 @@ public class ItemManager {
             ConfigurationSection section2 = section.getConfigurationSection(key);
             int slot = section2.getInt("slot");
             try {
-                ItemStack gun = GunsAPI.getGun(key).getItem().clone();
-                ItemMeta gunMeta = gun.getItemMeta();
+                Gun gun = GunsAPI.getGun(key);
+                if (gun == null) continue;
+                ItemStack gunItem = gun.getItem();
+                ItemMeta gunMeta = gunItem.getItemMeta();
                 String gunName = section2.getString("name");
                 List<Component> loreList = new ArrayList<>();
 
@@ -113,9 +116,9 @@ public class ItemManager {
                 }
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
                 gunMeta.lore(loreList);
-                gun.setItemMeta(gunMeta);
-                gun.setAmount(1);
-                guns.put(slot, gun);
+                gunItem.setItemMeta(gunMeta);
+                gunItem.setAmount(1);
+                guns.put(slot, gunItem);
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }

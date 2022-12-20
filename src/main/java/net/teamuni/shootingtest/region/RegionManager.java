@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.config;
+package net.teamuni.shootingtest.region;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;

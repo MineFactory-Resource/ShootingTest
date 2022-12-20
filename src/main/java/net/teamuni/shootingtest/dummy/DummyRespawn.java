@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.events;
+package net.teamuni.shootingtest.dummy;
 
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
@@ -6,7 +6,6 @@ import net.citizensnpcs.api.event.DespawnReason;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
-import net.teamuni.shootingtest.RespawnTask;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

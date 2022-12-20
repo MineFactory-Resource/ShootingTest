@@ -1,11 +1,11 @@
-package net.teamuni.shootingtest;
+package net.teamuni.shootingtest.config;
 
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
+import net.teamuni.shootingtest.ShootingTest;
 import net.teamuni.shootingtest.config.ItemManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
