@@ -28,15 +28,13 @@ public class stInventory implements Listener {
     @Getter
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
     private final Map<Integer, stInventoryItem> stItem;
-    private final Map<Integer, ItemStack> gun;
-    private final Inventory inventory;
+    private final Map<Integer, ItemStack> gunMap;
+    private final Map<UUID, Inventory> inventoryMap = new HashMap<>();
 
     public stInventory(ShootingTest instance) {
         this.main = instance;
         this.stItem = instance.getItemManager().getInventoryItems();
-        this.gun = instance.getItemManager().getGunItem("Guns");
-        this.inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
-        initializeItems();
+        this.gunMap = instance.getItemManager().getGunItem("Guns");
     }
 
     public void setPlayerInv(Player player) {
@@ -55,30 +53,27 @@ public class stInventory implements Listener {
         this.playerInventory.remove(player.getUniqueId());
     }
 
-    public void initializeItems() {
-        for (Map.Entry<Integer, ItemStack> guns : gun.entrySet()) {
-            this.inventory.setItem(guns.getKey(), guns.getValue());
-        }
-    }
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!event.getInventory().equals(this.inventory)) return;
+        Player player = (Player) event.getWhoClicked();
+        UUID uuid = player.getUniqueId();
+
+        if (!event.getInventory().equals(this.inventoryMap.get(uuid))) return;
         event.setCancelled(true);
 
-        Player player = (Player) event.getWhoClicked();
         int slot = main.getConfig().getInt("slot_where_gun_will_place");
         ItemStack item = event.getCurrentItem();
         if (item == null) return;
         Gun gun = GunsAPI.getGun(item);
         if (gun == null) return;
 
-        player.getInventory().setItem(slot, gun.getItem(player).clone());
+        player.getInventory().setItem(slot, gun.getItem(player));
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (!event.getInventory().equals(this.inventory)) return;
+        Player player = (Player) event.getWhoClicked();
+        if (!event.getInventory().equals(this.inventoryMap.get(player.getUniqueId()))) return;
         event.setCancelled(true);
     }
 
@@ -90,13 +85,25 @@ public class stInventory implements Listener {
         for (stInventoryItem inventoryItem : this.stItem.values()) {
             if (!inventoryItem.itemStack().equals(itemStack)) continue;
             switch (inventoryItem.type()) {
-                case MENU -> {
-                    player.openInventory(this.inventory);
-                }
-                case SPAWN -> {
-                    player.performCommand(main.getConfig().getString("spawn_command", "spawn"));
-                }
+                case MENU -> openGunInventory(player);
+                case SPAWN -> player.performCommand(main.getConfig().getString("spawn_command", "spawn"));
             }
         }
+    }
+
+    public void openGunInventory(Player player) {
+        UUID uuid = player.getUniqueId();
+        if (!this.inventoryMap.containsKey(uuid)) {
+            Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
+            for (Map.Entry<Integer, ItemStack> entry : this.gunMap.entrySet()) {
+                Gun gun = GunsAPI.getGun(entry.getValue());
+                if (gun == null) continue;
+                ItemStack item = gun.getItem(player).clone();
+                item.setAmount(1);
+                inventory.setItem(entry.getKey(), item);
+            }
+            this.inventoryMap.put(uuid, inventory);
+        }
+        player.openInventory(this.inventoryMap.get(uuid));
     }
 }
