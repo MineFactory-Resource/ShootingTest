@@ -27,10 +27,10 @@ public class PlayerMove implements Listener {
         for (CuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
             if (isInRegion(cuboid, event.getTo()) && !isInRegion(cuboid, event.getFrom())) {
                 if (main.getItemManager().hasMenuItem(player)) continue;
-                main.getInventory().setPlayerInv(player);
+                main.getStInventory().setPlayerInv(player);
             } else if (isInRegion(cuboid, event.getFrom()) && !isInRegion(cuboid, event.getTo())) {
                 if (!main.getItemManager().hasMenuItem(player)) continue;
-                main.getInventory().returnPlayerInv(player);
+                main.getStInventory().returnPlayerInv(player);
             }
         }
     }

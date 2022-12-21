@@ -15,7 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemManager {
 
@@ -46,14 +51,17 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public Map<Integer, ItemStack> getItems(String path) {
-        Map<Integer, ItemStack> items = new HashMap<>();
-        ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+    public Map<Integer, stInventoryItem> getInventoryItems() {
+        ConfigurationSection section = this.itemsFile.getConfigurationSection("InventoryItems");
         if (section == null) return null;
+
         Set<String> itemKeys = section.getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
+
+        Map<Integer, stInventoryItem> items = new HashMap<>();
+
         for (String key : itemKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
             if (section2 == null) continue;
@@ -62,6 +70,7 @@ public class ItemManager {
                 ItemStack item = new ItemStack(Material.valueOf(section2.getString("item_type")));
                 ItemMeta meta = item.getItemMeta();
                 String itemName = section2.getString("name", "");
+                ItemType type = ItemType.valueOf(section2.getString("type"));
                 List<Component> loreList = new ArrayList<>();
 
                 for (String lores : section2.getStringList("lore")) {
@@ -70,7 +79,7 @@ public class ItemManager {
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
                 meta.lore(loreList);
                 item.setItemMeta(meta);
-                items.put(slot, item);
+                items.put(slot, new stInventoryItem(item, type));
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -79,13 +88,16 @@ public class ItemManager {
     }
 
     public Map<Integer, ItemStack> getGunItem(String path) {
-        Map<Integer, ItemStack> guns = new HashMap<>();
         ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
         if (section == null) return null;
+
         Set<String> gunKeys = section.getKeys(false);
         if (gunKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
+
+        Map<Integer, ItemStack> guns = new HashMap<>();
+
         for (String key : gunKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
             if (section2 == null) continue;
@@ -138,8 +150,10 @@ public class ItemManager {
     }
 
     public boolean hasMenuItem(Player player) {
-        Set<ItemMeta> menuItemMeta = main.getInventory().getStItemMetaSet();
+        Set<ItemMeta> menuItemMeta = new HashSet<>();
         Set<ItemMeta> invItemMetaSet = new HashSet<>();
+        getInventoryItems().forEach((key, value) -> menuItemMeta.add(value.itemStack().getItemMeta()));
+
         for (int i = 0; i <= 8; i++) {
             ItemStack item = player.getInventory().getItem(i);
             if (item == null) continue;
