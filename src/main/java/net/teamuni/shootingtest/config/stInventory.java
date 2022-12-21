@@ -85,25 +85,31 @@ public class stInventory implements Listener {
         for (stInventoryItem inventoryItem : this.stItem.values()) {
             if (!inventoryItem.itemStack().equals(itemStack)) continue;
             switch (inventoryItem.type()) {
-                case MENU -> openGunInventory(player);
+                case MENU -> player.openInventory(gunInventory(player));
                 case SPAWN -> player.performCommand(main.getConfig().getString("spawn_command", "spawn"));
             }
         }
     }
 
-    public void openGunInventory(Player player) {
+    public Inventory gunInventory(Player player) {
         UUID uuid = player.getUniqueId();
+        Inventory inventory;
+
         if (!this.inventoryMap.containsKey(uuid)) {
-            Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
-            for (Map.Entry<Integer, ItemStack> entry : this.gunMap.entrySet()) {
-                Gun gun = GunsAPI.getGun(entry.getValue());
-                if (gun == null) continue;
-                ItemStack item = gun.getItem(player).clone();
-                item.setAmount(1);
-                inventory.setItem(entry.getKey(), item);
-            }
-            this.inventoryMap.put(uuid, inventory);
+            inventory = Bukkit.createInventory(null, InventoryType.CHEST, Component.text("Guns"));
+        } else {
+            inventory = this.inventoryMap.get(uuid);
         }
-        player.openInventory(this.inventoryMap.get(uuid));
+
+        for (Map.Entry<Integer, ItemStack> entry : this.gunMap.entrySet()) {
+            Gun gun = GunsAPI.getGun(entry.getValue());
+            if (gun == null) continue;
+            ItemStack item = gun.getItem(player).clone();
+            item.setAmount(1);
+            inventory.setItem(entry.getKey(), item);
+        }
+        this.inventoryMap.put(uuid, inventory);
+
+        return inventory;
     }
 }
