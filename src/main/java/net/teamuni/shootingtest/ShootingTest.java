@@ -3,7 +3,7 @@ package net.teamuni.shootingtest;
 import lombok.Getter;
 import net.teamuni.shootingtest.command.CommandTabCompleter;
 import net.teamuni.shootingtest.command.ShootingTestCmd;
-import net.teamuni.shootingtest.config.stInventory;
+import net.teamuni.shootingtest.config.StInventory;
 import net.teamuni.shootingtest.dummy.DummyDamage;
 import net.teamuni.shootingtest.dummy.DummyManager;
 import net.teamuni.shootingtest.config.ItemManager;
@@ -23,7 +23,7 @@ public final class ShootingTest extends JavaPlugin {
     private MessageManager messageManager;
     private DummyManager dummyManager;
     private RegionManager regionManager;
-    private stInventory stInventory;
+    private StInventory stInventory;
     private DummyRespawn dummyRespawn;
     private SetRegion setRegion;
 
@@ -33,7 +33,7 @@ public final class ShootingTest extends JavaPlugin {
         this.dummyManager = new DummyManager(this);
         this.dummyRespawn = new DummyRespawn(this);
         this.itemManager = new ItemManager(this);
-        this.stInventory = new stInventory(this);
+        this.stInventory = new StInventory(this);
         this.setRegion = new SetRegion(this);
         this.messageManager = new MessageManager(this);
         saveDefaultConfig();

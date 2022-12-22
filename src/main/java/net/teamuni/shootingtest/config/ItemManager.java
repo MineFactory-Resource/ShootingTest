@@ -51,7 +51,7 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public Map<Integer, stInventoryItem> getInventoryItems() {
+    public Map<Integer, StInventoryItem> getInventoryItems() {
         ConfigurationSection section = this.itemsFile.getConfigurationSection("InventoryItems");
         if (section == null) return null;
 
@@ -60,7 +60,7 @@ public class ItemManager {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
 
-        Map<Integer, stInventoryItem> items = new HashMap<>();
+        Map<Integer, StInventoryItem> items = new HashMap<>();
 
         for (String key : itemKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
@@ -79,7 +79,7 @@ public class ItemManager {
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
                 meta.lore(loreList);
                 item.setItemMeta(meta);
-                items.put(slot, new stInventoryItem(item, type));
+                items.put(slot, new StInventoryItem(item, type));
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }

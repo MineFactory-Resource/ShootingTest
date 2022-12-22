@@ -22,16 +22,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class stInventory implements Listener {
+public class StInventory implements Listener {
     private final ShootingTest main;
     @NotNull
     @Getter
     private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
-    private final Map<Integer, stInventoryItem> stItem;
+    private final Map<Integer, StInventoryItem> stItem;
     private final Map<Integer, ItemStack> gunMap;
     private final Map<UUID, Inventory> inventoryMap = new HashMap<>();
 
-    public stInventory(ShootingTest instance) {
+    public StInventory(ShootingTest instance) {
         this.main = instance;
         this.stItem = instance.getItemManager().getInventoryItems();
         this.gunMap = instance.getItemManager().getGunItem("Guns");
@@ -42,7 +42,7 @@ public class stInventory implements Listener {
         this.playerInventory.put(player.getUniqueId(), inv);
         player.getInventory().clear();
 
-        for (Map.Entry<Integer, stInventoryItem> items : stItem.entrySet()) {
+        for (Map.Entry<Integer, StInventoryItem> items : stItem.entrySet()) {
             player.getInventory().setItem(items.getKey(), items.getValue().itemStack());
         }
     }
@@ -82,7 +82,7 @@ public class stInventory implements Listener {
         Player player = event.getPlayer();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-        for (stInventoryItem inventoryItem : this.stItem.values()) {
+        for (StInventoryItem inventoryItem : this.stItem.values()) {
             if (!inventoryItem.itemStack().equals(itemStack)) continue;
             switch (inventoryItem.type()) {
                 case MENU -> player.openInventory(gunInventory(player));
