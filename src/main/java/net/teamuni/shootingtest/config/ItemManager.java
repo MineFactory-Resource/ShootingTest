@@ -2,7 +2,9 @@ package net.teamuni.shootingtest.config;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
+import net.teamuni.gunscore.gunslib.object.Gun;
 import net.teamuni.shootingtest.ShootingTest;
+import net.teamuni.shootingtest.inventory.InventoryItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,11 +14,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemManager {
 
@@ -39,20 +44,6 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public FileConfiguration getConfig() {
-        return this.itemsFile;
-    }
-
-    public void save() {
-        if (this.file == null || this.itemsFile == null) return;
-
-        try {
-            getConfig().save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void reload() {
         if (this.file == null) {
             this.file = new File(main.getDataFolder(), "items.yml");
@@ -61,21 +52,26 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    @NotNull
-    public Map<Integer, ItemStack> getItems(String path) {
-        Map<Integer, ItemStack> items = new HashMap<>();
-        ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+    public Map<Integer, InventoryItem> getInventoryItems() {
+        ConfigurationSection section = this.itemsFile.getConfigurationSection("InventoryItems");
+        if (section == null) return null;
+
         Set<String> itemKeys = section.getKeys(false);
         if (itemKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
+
+        Map<Integer, InventoryItem> items = new HashMap<>();
+
         for (String key : itemKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
+            if (section2 == null) continue;
             int slot = section2.getInt("slot");
             try {
                 ItemStack item = new ItemStack(Material.valueOf(section2.getString("item_type")));
                 ItemMeta meta = item.getItemMeta();
-                String itemName = section2.getString("name");
+                String itemName = section2.getString("name", "");
+                ItemType type = ItemType.valueOf(section2.getString("type"));
                 List<Component> loreList = new ArrayList<>();
 
                 for (String lores : section2.getStringList("lore")) {
@@ -84,7 +80,7 @@ public class ItemManager {
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
                 meta.lore(loreList);
                 item.setItemMeta(meta);
-                items.put(slot, item);
+                items.put(slot, new InventoryItem(item, type));
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -93,19 +89,26 @@ public class ItemManager {
     }
 
     public Map<Integer, ItemStack> getGunItem(String path) {
-        Map<Integer, ItemStack> guns = new HashMap<>();
         ConfigurationSection section = this.itemsFile.getConfigurationSection(path);
+        if (section == null) return null;
+
         Set<String> gunKeys = section.getKeys(false);
         if (gunKeys.isEmpty()) {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
+
+        Map<Integer, ItemStack> guns = new HashMap<>();
+
         for (String key : gunKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
+            if (section2 == null) continue;
             int slot = section2.getInt("slot");
             try {
-                ItemStack gun = GunsAPI.getGun(key).getItem().clone();
-                ItemMeta gunMeta = gun.getItemMeta();
-                String gunName = section2.getString("name");
+                Gun gun = GunsAPI.getGun(key);
+                if (gun == null) continue;
+                ItemStack gunItem = gun.getItem();
+                ItemMeta gunMeta = gunItem.getItemMeta();
+                String gunName = section2.getString("name", "");
                 List<Component> loreList = new ArrayList<>();
 
                 for (String lores : section2.getStringList("lore")) {
@@ -113,9 +116,8 @@ public class ItemManager {
                 }
                 gunMeta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', gunName)));
                 gunMeta.lore(loreList);
-                gun.setItemMeta(gunMeta);
-                gun.setAmount(1);
-                guns.put(slot, gun);
+                gunItem.setItemMeta(gunMeta);
+                guns.put(slot, gunItem);
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -148,11 +150,14 @@ public class ItemManager {
     }
 
     public boolean hasMenuItem(Player player) {
-        Set<ItemMeta> menuItemMeta = main.getInventory().getStItemMetaSet();
+        Set<ItemMeta> menuItemMeta = new HashSet<>();
         Set<ItemMeta> invItemMetaSet = new HashSet<>();
+        getInventoryItems().forEach((key, value) -> menuItemMeta.add(value.itemStack().getItemMeta()));
+
         for (int i = 0; i <= 8; i++) {
-            if (player.getInventory().getItem(i) == null) continue;
-            invItemMetaSet.add(player.getInventory().getItem(i).getItemMeta());
+            ItemStack item = player.getInventory().getItem(i);
+            if (item == null) continue;
+            invItemMetaSet.add(item.getItemMeta());
         }
         for (ItemMeta invItemMeta : invItemMetaSet) {
             if (invItemMeta == null) continue;

@@ -1,7 +1,8 @@
-package net.teamuni.shootingtest;
+package net.teamuni.shootingtest.dummy;
 
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

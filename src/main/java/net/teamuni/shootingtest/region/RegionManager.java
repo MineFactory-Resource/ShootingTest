@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.config;
+package net.teamuni.shootingtest.region;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -102,7 +102,7 @@ public class RegionManager {
         main.getSetRegion().getPositionMap().clear();
 
         for (Player playerInRegion : getPlayerInRegion(cuboidRegion)) {
-            main.getInventory().setPlayerInv(playerInRegion);
+            main.getInventoryManager().setPlayerInv(playerInRegion);
         }
         String message = main.getMessageManager().getConfig().getString("region_created", "&aRegion has been created successfully!");
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -116,7 +116,7 @@ public class RegionManager {
             return;
         }
         for (Player playerInRegion : getPlayerInRegion(region.get(name))) {
-            main.getInventory().returnPlayerInv(playerInRegion);
+            main.getInventoryManager().returnPlayerInv(playerInRegion);
         }
         section.set(name, null);
         region.remove(name);

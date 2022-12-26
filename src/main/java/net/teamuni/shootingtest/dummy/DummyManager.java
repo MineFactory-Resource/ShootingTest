@@ -1,4 +1,4 @@
-package net.teamuni.shootingtest.config;
+package net.teamuni.shootingtest.dummy;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;

@@ -1,2 +1,4 @@
 dummy_health: 100
 dummy_respawn_delay: 100 #ticks
+slot_where_gun_will_place: 4
+spawn_command: "spawn"
