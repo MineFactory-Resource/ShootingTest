@@ -1,6 +1,5 @@
-package net.teamuni.shootingtest.config;
+package net.teamuni.shootingtest.inventory;
 
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.gunscore.gunslib.object.Gun;
@@ -16,41 +15,17 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class StInventory implements Listener {
+public class GunSelectionGUI implements Listener {
     private final ShootingTest main;
-    @NotNull
-    @Getter
-    private final Map<UUID, ItemStack[]> playerInventory = new HashMap<>();
-    private final Map<Integer, StInventoryItem> stItem;
-    private final Map<Integer, ItemStack> gunMap;
     private final Map<UUID, Inventory> inventoryMap = new HashMap<>();
 
-    public StInventory(ShootingTest instance) {
+    public GunSelectionGUI(ShootingTest instance) {
         this.main = instance;
-        this.stItem = instance.getItemManager().getInventoryItems();
-        this.gunMap = instance.getItemManager().getGunItem("Guns");
-    }
-
-    public void setPlayerInv(Player player) {
-        ItemStack[] inv = player.getInventory().getContents();
-        this.playerInventory.put(player.getUniqueId(), inv);
-        player.getInventory().clear();
-
-        for (Map.Entry<Integer, StInventoryItem> items : stItem.entrySet()) {
-            player.getInventory().setItem(items.getKey(), items.getValue().itemStack());
-        }
-    }
-
-    public void returnPlayerInv(Player player) {
-        player.getInventory().clear();
-        player.getInventory().setContents(this.playerInventory.get(player.getUniqueId()));
-        this.playerInventory.remove(player.getUniqueId());
     }
 
     @EventHandler
@@ -82,7 +57,7 @@ public class StInventory implements Listener {
         Player player = event.getPlayer();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-        for (StInventoryItem inventoryItem : this.stItem.values()) {
+        for (InventoryItem inventoryItem : main.getItemManager().getInventoryItems().values()) {
             if (!inventoryItem.itemStack().equals(itemStack)) continue;
             switch (inventoryItem.type()) {
                 case MENU -> player.openInventory(gunInventory(player));
@@ -101,7 +76,7 @@ public class StInventory implements Listener {
             inventory = this.inventoryMap.get(uuid);
         }
 
-        for (Map.Entry<Integer, ItemStack> entry : this.gunMap.entrySet()) {
+        for (Map.Entry<Integer, ItemStack> entry : main.getItemManager().getGunItem("Guns").entrySet()) {
             Gun gun = GunsAPI.getGun(entry.getValue());
             if (gun == null) continue;
             ItemStack item = gun.getItem(player).clone();

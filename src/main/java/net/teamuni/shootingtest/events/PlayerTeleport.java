@@ -24,10 +24,10 @@ public class PlayerTeleport implements Listener {
         for (CuboidRegion cuboid : main.getRegionManager().getRegion().values()) {
             if (isInRegion(cuboid, event.getTo()) && !isInRegion(cuboid, event.getFrom())) {
                 if (main.getItemManager().hasMenuItem(player)) continue;
-                main.getStInventory().setPlayerInv(player);
+                main.getInventoryManager().setPlayerInv(player);
             } else if (isInRegion(cuboid, event.getFrom()) && !isInRegion(cuboid, event.getTo())) {
                 if (!main.getItemManager().hasMenuItem(player)) continue;
-                main.getStInventory().returnPlayerInv(player);
+                main.getInventoryManager().returnPlayerInv(player);
             }
         }
         if (event.getFrom().getWorld().equals(event.getTo().getWorld())) return;

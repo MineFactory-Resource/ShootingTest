@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
 import net.teamuni.gunscore.gunslib.object.Gun;
 import net.teamuni.shootingtest.ShootingTest;
+import net.teamuni.shootingtest.inventory.InventoryItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,7 +52,7 @@ public class ItemManager {
         this.itemsFile = YamlConfiguration.loadConfiguration(file);
     }
 
-    public Map<Integer, StInventoryItem> getInventoryItems() {
+    public Map<Integer, InventoryItem> getInventoryItems() {
         ConfigurationSection section = this.itemsFile.getConfigurationSection("InventoryItems");
         if (section == null) return null;
 
@@ -60,7 +61,7 @@ public class ItemManager {
             throw new IllegalArgumentException("items.yml에서 정보를 가져오는 도중 문제가 발생했습니다.");
         }
 
-        Map<Integer, StInventoryItem> items = new HashMap<>();
+        Map<Integer, InventoryItem> items = new HashMap<>();
 
         for (String key : itemKeys) {
             ConfigurationSection section2 = section.getConfigurationSection(key);
@@ -79,7 +80,7 @@ public class ItemManager {
                 meta.displayName(Component.text(ChatColor.translateAlternateColorCodes('&', itemName)));
                 meta.lore(loreList);
                 item.setItemMeta(meta);
-                items.put(slot, new StInventoryItem(item, type));
+                items.put(slot, new InventoryItem(item, type));
             } catch (NullPointerException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
