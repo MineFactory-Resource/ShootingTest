@@ -2,7 +2,7 @@ package net.teamuni.shootingtest.config;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
-import net.teamuni.gunscore.gunslib.object.Gun;
+import net.teamuni.gunscore.api.weapons.Gun;
 import net.teamuni.shootingtest.ShootingTest;
 import net.teamuni.shootingtest.inventory.InventoryItem;
 import org.bukkit.ChatColor;

@@ -2,7 +2,7 @@ package net.teamuni.shootingtest.inventory;
 
 import net.kyori.adventure.text.Component;
 import net.teamuni.gunscore.api.GunsAPI;
-import net.teamuni.gunscore.gunslib.object.Gun;
+import net.teamuni.gunscore.api.weapons.Gun;
 import net.teamuni.shootingtest.ShootingTest;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -79,7 +79,7 @@ public class GunSelectionGUI implements Listener {
         for (Map.Entry<Integer, ItemStack> entry : main.getItemManager().getGunItem("Guns").entrySet()) {
             Gun gun = GunsAPI.getGun(entry.getValue());
             if (gun == null) continue;
-            ItemStack item = gun.getItem(player).clone();
+            ItemStack item = gun.getItem(player);
             item.setAmount(1);
             inventory.setItem(entry.getKey(), item);
         }
