@@ -91,9 +91,9 @@
         <dependency>
             <groupId>net.teamuni</groupId>
             <artifactId>GunsAPI</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/GunsAPI-0.2.0.jar</systemPath>
+            <systemPath>${project.basedir}/libs/GunsAPI-0.2.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>
