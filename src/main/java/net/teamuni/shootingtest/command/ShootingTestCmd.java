@@ -22,7 +22,7 @@ public class ShootingTestCmd implements CommandExecutor {
             if (command.getName().equalsIgnoreCase("사격장") && player.hasPermission("st.manage")) {
                 if (args.length > 0) {
                     switch (args[0]) {
-                        case "reload" -> {
+                        case "리로드" -> {
                             if (args.length != 1) {
                                 sendWarningMsg(player);
                                 return false;
@@ -35,7 +35,7 @@ public class ShootingTestCmd implements CommandExecutor {
                                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadMessages));
                             }
                         }
-                        case "help" -> {
+                        case "도움말" -> {
                             if (args.length != 1) {
                                 sendWarningMsg(player);
                                 return false;
@@ -44,30 +44,30 @@ public class ShootingTestCmd implements CommandExecutor {
                                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', cmd));
                             }
                         }
-                        case "region" -> {
+                        case "지역" -> {
                             switch (args[1]) {
-                                case "create" -> {
+                                case "생성" -> {
                                     if (args.length != 3) {
                                         sendWarningMsg(player);
                                         return false;
                                     }
                                     main.getRegionManager().createRegion(player, args[2]);
                                 }
-                                case "remove" -> {
+                                case "제거" -> {
                                     if (args.length != 3) {
                                         sendWarningMsg(player);
                                         return false;
                                     }
                                     main.getRegionManager().removeRegion(player, args[2]);
                                 }
-                                case "see" -> {
-                                    if (args[2].equalsIgnoreCase("list")) {
+                                case "확인" -> {
+                                    if (args[2].equalsIgnoreCase("목록")) {
                                         if (args.length != 3) {
                                             sendWarningMsg(player);
                                             return false;
                                         }
                                         main.getRegionManager().seeRegions(player);
-                                    } else if (args[2].equalsIgnoreCase("positions")) {
+                                    } else if (args[2].equalsIgnoreCase("위치")) {
                                         if (args.length != 4) {
                                             sendWarningMsg(player);
                                             return false;
@@ -78,37 +78,37 @@ public class ShootingTestCmd implements CommandExecutor {
                                 default -> sendWarningMsg(player);
                             }
                         }
-                        case "wand" -> {
+                        case "완드" -> {
                             if (args.length != 1) {
                                 sendWarningMsg(player);
                                 return false;
                             }
                             main.getItemManager().giveWand(player);
                         }
-                        case "dummy" -> {
+                        case "타겟" -> {
                             switch (args[1]) {
-                                case "create" -> {
+                                case "생성" -> {
                                     if (args.length != 3) {
                                         sendWarningMsg(player);
                                         return false;
                                     }
                                     main.getDummyManager().createDummy(player, args[2], player.getLocation());
                                 }
-                                case "remove" -> {
+                                case "제거" -> {
                                     if (args.length != 3) {
                                         sendWarningMsg(player);
                                         return false;
                                     }
                                     main.getDummyManager().removeDummy(player, args[2]);
                                 }
-                                case "list" -> {
+                                case "목록" -> {
                                     if (args.length != 2) {
                                         sendWarningMsg(player);
                                         return false;
                                     }
                                     main.getDummyManager().seeDummies(player);
                                 }
-                                case "tp" -> {
+                                case "텔레포트" -> {
                                     if (args.length != 3) {
                                         sendWarningMsg(player);
                                         return false;
