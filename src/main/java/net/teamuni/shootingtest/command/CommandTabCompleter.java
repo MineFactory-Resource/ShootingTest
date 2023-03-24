@@ -17,29 +17,29 @@ public class CommandTabCompleter implements TabCompleter {
             List<String> tabCompleteList = new ArrayList<>();
             if (args.length > 0) {
                 if (args.length == 1) {
-                    tabCompleteList.add("reload");
-                    tabCompleteList.add("region");
-                    tabCompleteList.add("help");
-                    tabCompleteList.add("wand");
-                    tabCompleteList.add("dummy");
+                    tabCompleteList.add("리로드");
+                    tabCompleteList.add("지역");
+                    tabCompleteList.add("도움말");
+                    tabCompleteList.add("완드");
+                    tabCompleteList.add("타겟");
                 }
-                if (args[0].equalsIgnoreCase("region")) {
+                if (args[0].equalsIgnoreCase("지역")) {
                     if (args.length > 1) {
                         if (args.length == 2) {
-                            tabCompleteList.add("create");
-                            tabCompleteList.add("remove");
-                            tabCompleteList.add("see");
-                        } else if (args.length == 3 && args[1].equals("see")) {
-                            tabCompleteList.add("list");
-                            tabCompleteList.add("positions");
+                            tabCompleteList.add("생성");
+                            tabCompleteList.add("제거");
+                            tabCompleteList.add("확인");
+                        } else if (args.length == 3 && args[1].equals("확인")) {
+                            tabCompleteList.add("목록");
+                            tabCompleteList.add("위치");
                         }
                     }
-                } else if (args[0].equalsIgnoreCase("dummy")) {
+                } else if (args[0].equalsIgnoreCase("타겟")) {
                     if (args.length == 2) {
-                        tabCompleteList.add("create");
-                        tabCompleteList.add("remove");
-                        tabCompleteList.add("list");
-                        tabCompleteList.add("tp");
+                        tabCompleteList.add("생성");
+                        tabCompleteList.add("제거");
+                        tabCompleteList.add("목록");
+                        tabCompleteList.add("텔레포트");
                     }
                 }
                 return tabCompleteList;
